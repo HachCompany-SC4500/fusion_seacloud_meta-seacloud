@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs WiFi logger script every 5 minutes
+
+[Timer]
+OnBootSec=5min
+#it is started every 5 minutes and 5 minutes after the activation (not instantaneously)
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=multi-user.target

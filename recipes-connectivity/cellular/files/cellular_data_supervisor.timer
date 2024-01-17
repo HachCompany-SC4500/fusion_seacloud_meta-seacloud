@@ -1,0 +1,10 @@
+[Unit]
+Description=Runs Cellular Data Supervisor script every 5 minutes
+
+[Timer]
+#Cellular_data_supervisor.service is started every 5 minutes and 5 minutes after the activation (not instantaneously)
+OnActiveSec=5min
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=multi-user.target

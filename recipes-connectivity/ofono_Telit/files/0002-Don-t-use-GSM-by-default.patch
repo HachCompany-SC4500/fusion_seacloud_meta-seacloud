@@ -1,0 +1,75 @@
+From 2076a15cba14b0862d11f0c06b6c46861df82275 Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Fri, 7 May 2021 09:36:21 +0200
+Subject: [PATCH] Don't use GSM by default; only UMTS and LTE.
+
+This is because the Telit LE910-V2 modem consumes more power when using 2G (GSM) technology and the cables
+we are currently using to connect modems to controllers draw too much power.
+This is a temporary workaround. Once we have new cables capable of transfering enough power for the modem
+to work in 2G (GSM) mode, this patch can be removed.
+
+Jira tickets: FCON2-1993 and FCON2-2049
+---
+ drivers/telitmodem/radio-settings.c | 4 ++--
+ plugins/phonesim.c                  | 2 +-
+ src/radio-settings.c                | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/telitmodem/radio-settings.c b/drivers/telitmodem/radio-settings.c
+index f8a0db83..602dc8f1 100644
+--- a/drivers/telitmodem/radio-settings.c
++++ b/drivers/telitmodem/radio-settings.c
+@@ -191,13 +191,13 @@ static void telit_set_rat_mode(struct ofono_radio_settings *rs,
+ 	struct radio_settings_data *rsd = ofono_radio_settings_get_data(rs);
+ 	struct cb_data *cbd = cb_data_new(cb, data);
+ 	char buf[40];
+-	unsigned int value = 25;
++	unsigned int value = 31;
+ 
+ 	if (mode <= OFONO_RADIO_ACCESS_MODE_LTE)
+ 	{
+ 		switch (mode) {
+ 			case OFONO_RADIO_ACCESS_MODE_ANY:
+-				value = 25;
++				value = 31;
+ 			break;
+ 			case OFONO_RADIO_ACCESS_MODE_GSM:
+ 				value = 12;
+diff --git a/plugins/phonesim.c b/plugins/phonesim.c
+index bbbcbb30..59e4e1d7 100644
+--- a/plugins/phonesim.c
++++ b/plugins/phonesim.c
+@@ -393,7 +393,7 @@ static void phonesim_query_rat_mode(struct ofono_radio_settings *rs,
+ {
+ 	DBG("");
+ 
+-	CALLBACK_WITH_SUCCESS(cb, OFONO_RADIO_ACCESS_MODE_ANY, data);
++	CALLBACK_WITH_SUCCESS(cb, OFONO_RADIO_ACCESS_MODE_UMTS_LTE, data);
+ }
+ 
+ static void phonesim_query_available_rats(struct ofono_radio_settings *rs,
+diff --git a/src/radio-settings.c b/src/radio-settings.c
+index 1a8ebb0f..16dd2ed5 100644
+--- a/src/radio-settings.c
++++ b/src/radio-settings.c
+@@ -861,7 +861,7 @@ static void radio_load_settings(struct ofono_radio_settings *rs,
+ 	 */
+ 	if (rs->settings == NULL) {
+ 		DBG("radiosetting storage open failed");
+-		rs->mode = OFONO_RADIO_ACCESS_MODE_ANY;
++		rs->mode = OFONO_RADIO_ACCESS_MODE_UMTS_LTE;
+ 		rs->band_gsm = OFONO_RADIO_BAND_GSM_ANY;
+ 		rs->band_umts = OFONO_RADIO_BAND_UMTS_ANY;
+ 		return;
+@@ -906,7 +906,7 @@ static void radio_load_settings(struct ofono_radio_settings *rs,
+ 					"TechnologyPreference", &error);
+ 
+ 	if (error || radio_access_mode_to_string(rs->mode) == NULL) {
+-		rs->mode = OFONO_RADIO_ACCESS_MODE_ANY;
++		rs->mode = OFONO_RADIO_ACCESS_MODE_UMTS_LTE;
+ 		g_key_file_set_integer(rs->settings, SETTINGS_GROUP,
+ 					"TechnologyPreference", rs->mode);
+ 	}
+-- 
+2.20.1
+

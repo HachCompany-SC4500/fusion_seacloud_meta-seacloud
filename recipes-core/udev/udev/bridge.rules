@@ -1,0 +1,6 @@
+# Bridge device rules file
+#
+
+# This rule triggers bridge MAC address configuration
+
+SUBSYSTEM=="net", ACTION=="add", RUN+="/etc/udev/scripts/bridge-mac-configure.sh &"

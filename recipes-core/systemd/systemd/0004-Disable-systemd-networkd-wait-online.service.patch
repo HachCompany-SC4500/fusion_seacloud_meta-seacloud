@@ -1,0 +1,61 @@
+From add19734ad88c6fd6d8ed7cdf5367ebb39ce474e Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Mon, 20 Sep 2021 16:38:45 +0200
+Subject: [PATCH] Remove dependency of network-online.target on
+ systemd-networkd-wait-online.service.
+
+This is due to the fact that systemd-networkd-wait-online always failed, even
+when the system is effectively online. This is because, most of the time, at least
+one network interface is not configured.
+Also, it is expected that the majority of the devices that will be deployed will
+be offline most of the time. Keeping this systemd-networkd-wait-online.service
+enabled would therefore cause their system to be in "degraded" state most of
+the time.
+---
+ units/meson.build                             | 3 +--
+ units/systemd-networkd-wait-online.service.in | 3 ---
+ units/systemd-networkd.service.in             | 6 ------
+ 3 files changed, 1 insertion(+), 11 deletions(-)
+
+diff --git a/units/meson.build b/units/meson.build
+index e4ac6ced64..d0c38603a6 100644
+--- a/units/meson.build
++++ b/units/meson.build
+@@ -173,8 +173,7 @@ in_units = [
+         ['systemd-networkd.service',             'ENABLE_NETWORKD',
+          join_paths(pkgsysconfdir, 'system/dbus-org.freedesktop.network1.service') + ' ' +
+          join_paths(pkgsysconfdir, 'system/multi-user.target.wants/')],
+-        ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD',
+-         join_paths(pkgsysconfdir, 'system/network-online.target.wants/')],
++        ['systemd-networkd-wait-online.service', 'ENABLE_NETWORKD'],
+         ['systemd-nspawn@.service',              ''],
+         ['systemd-portabled.service',            'ENABLE_PORTABLED',
+          'dbus-org.freedesktop.portable1.service'],
+diff --git a/units/systemd-networkd-wait-online.service.in b/units/systemd-networkd-wait-online.service.in
+index 7666e16669..0cf4838745 100644
+--- a/units/systemd-networkd-wait-online.service.in
++++ b/units/systemd-networkd-wait-online.service.in
+@@ -20,6 +20,3 @@ Before=network-online.target shutdown.target
+ Type=oneshot
+ ExecStart=@rootlibexecdir@/systemd-networkd-wait-online
+ RemainAfterExit=yes
+-
+-[Install]
+-WantedBy=network-online.target
+diff --git a/units/systemd-networkd.service.in b/units/systemd-networkd.service.in
+index 371ab3a9cf..da1e1df881 100644
+--- a/units/systemd-networkd.service.in
++++ b/units/systemd-networkd.service.in
+@@ -46,9 +46,3 @@ RuntimeDirectoryPreserve=yes
+ WantedBy=multi-user.target
+ Also=systemd-networkd.socket
+ Alias=dbus-org.freedesktop.network1.service
+-
+-# We want to enable systemd-networkd-wait-online.service whenever this service
+-# is enabled. systemd-networkd-wait-online.service has
+-# WantedBy=network-online.target, so enabling it only has an effect if
+-# network-online.target itself is enabled or pulled in by some other unit.
+-Also=systemd-networkd-wait-online.service
+-- 
+2.17.1
+

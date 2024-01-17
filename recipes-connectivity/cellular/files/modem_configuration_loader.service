@@ -1,0 +1,21 @@
+# The purpose of this service is to enable the cellular connectivity of the
+# controller. It first load the stored configuration, if present, and start
+# the connection to the cellular network available with the loaded configuration
+# In case of failure, a retry is automatically scheduled 5 minutes later
+
+[Unit]
+Description=Modem Configuration Loader
+
+# Only start the service when the file /media/persistent/system/config_modem
+# This file must exists because the configuration that must be loaded is stored
+# in it. Starting the service when it does not exist will lead to an error
+ConditionPathExists=/media/persistent/system/config_modem
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/config_modem.py loadconf
+Restart=on-failure
+RestartSec=5m
+
+[Install]
+WantedBy=multi-user.target

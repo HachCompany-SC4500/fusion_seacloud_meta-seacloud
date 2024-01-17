@@ -1,0 +1,13 @@
+[Unit]
+Description=Telephony service
+After=syslog.target connman.service
+
+[Service]
+Type=dbus
+BusName=org.ofono
+ExecStart=/lib/systemd/system/ofono.sh
+StandardError=null
+
+[Install]
+WantedBy=multi-user.target
+

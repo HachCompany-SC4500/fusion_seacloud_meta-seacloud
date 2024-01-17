@@ -1,0 +1,12 @@
+# This service reads the ethernet ports mode saved on the persistent partition and sends it to the IEP module. 
+# This is needed to ensure IEP module matches the actual saved settings, in case of module replacement.
+# This service is triggered by its associated timer, so, the requirements and synchronization with other
+# services are defined in the .timer file.
+
+[Unit]
+Description=Ethernet ports mode configuration sender
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/local/bin/config_ethernet_ports_mode.py update IEP module

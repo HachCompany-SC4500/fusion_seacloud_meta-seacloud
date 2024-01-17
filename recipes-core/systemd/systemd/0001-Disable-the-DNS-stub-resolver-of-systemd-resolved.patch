@@ -1,0 +1,23 @@
+From e27fb74f7844f6e976b70ad128c3ec97090b75a5 Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Wed, 12 May 2021 08:35:12 +0200
+Subject: [PATCH] Disable the DNS stub resolver of systemd-resolved by default
+ as port 53 should be in use by dnsmasq.
+
+---
+ src/resolve/resolved.conf.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/resolve/resolved.conf.in b/src/resolve/resolved.conf.in
+index 2528340f74..45c4b459d8 100644
+--- a/src/resolve/resolved.conf.in
++++ b/src/resolve/resolved.conf.in
+@@ -20,4 +20,4 @@
+ #DNSSEC=@DEFAULT_DNSSEC_MODE@
+ #DNSOverTLS=@DEFAULT_DNS_OVER_TLS_MODE@
+ #Cache=yes
+-#DNSStubListener=udp
++DNSStubListener=no
+-- 
+2.20.1
+

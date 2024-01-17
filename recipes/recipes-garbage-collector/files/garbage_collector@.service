@@ -1,0 +1,19 @@
+[Unit]
+Description=Garbage collector service
+# There is no need to set After/Requires here. See [Install] section above
+
+[Service]
+Type=simple
+# Stop the .path services before starting the job to prevent relaunching
+# the .service, as the job modifies the path monitored by .path services
+ExecStartPre=systemctl stop garbage_collector_logs.path
+ExecStartPre=systemctl stop garbage_collector_core.path
+# Restart the .path services after doing the job
+ExecStartPost=systemctl start garbage_collector_logs.path
+ExecStartPost=systemctl start garbage_collector_core.path
+# Pass instance name (%I) as argument so that the script knows who triggered the service (core, logs or timer)
+ExecStart=/usr/local/bin/garbage_collector.sh %I
+
+[Install]
+# No install section is needed
+# This service is triggered by its .timer and two .path units

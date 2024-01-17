@@ -1,0 +1,11 @@
+[Unit]
+Description=iptables rules for IPv6
+Wants=network-pre.target
+Before=network-pre.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/ip6tables.sh
+
+[Install]
+WantedBy=multi-user.target

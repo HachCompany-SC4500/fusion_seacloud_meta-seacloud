@@ -1,0 +1,8 @@
+[Unit]
+Description=Filtered touchscreen input
+BindsTo=dev-input-ts.device
+After=dev-input-ts.device
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/ts_uinput -d -v

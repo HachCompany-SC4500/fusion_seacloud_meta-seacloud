@@ -1,0 +1,14 @@
+[Unit]
+Description=Ethernet ports mode configuration sender timer
+
+# To write Ethernet ports mode configuration to the IEP module,
+# FCC must be running, as it is done with TestClientII.
+After=network.target fcc.service
+
+[Timer]
+# 30 seconds after the first activation, to let FCC processes start properly
+OnActiveSec=30sec
+AccuracySec=1sec
+
+[Install]
+WantedBy=network.target

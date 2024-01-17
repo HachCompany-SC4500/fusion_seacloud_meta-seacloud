@@ -1,0 +1,40 @@
+From 022ca30f9b452a7350aacc5d0fb3cef539f25765 Mon Sep 17 00:00:00 2001
+From: Dragan Cecavac <dcecavac@witekio.com>
+Date: Mon, 14 Dec 2020 08:15:33 +0100
+Subject: [PATCH] Don't enforce Verizon mode
+
+---
+ plugins/le910v2.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
+
+diff --git a/plugins/le910v2.c b/plugins/le910v2.c
+index d94ea04..07fbe54 100644
+--- a/plugins/le910v2.c
++++ b/plugins/le910v2.c
+@@ -432,18 +432,11 @@ static void telit_multitech_fwswitch_cb(gboolean ok, GAtResult *result, gpointer
+ 		return;
+ 	}
+ 
+-	if (provider_status != 1) {
+-		DBG("Multitech modem in wrong ProviderMode detected, switching to 'Verizon'");
+-		g_at_chat_send(data->chat, "AT#FWSWITCH=1,1", fwswitch_prefix,
+-				telit_multitech_reboot_cb, modem, NULL);
+-		
+-	} else {
+-		DBG("Multitech already in correct ProviderMode");
+-		if (data->modem_needs_reset) {
+-			DBG("Multitech modem needs restart after USBCFG changed");
+-			g_at_chat_send(data->chat, "AT#REBOOT", none_prefix,
+-				telit_multitech_reboot_cb, modem, NULL);
+-		}
++	DBG("Multitech already in correct ProviderMode");
++	if (data->modem_needs_reset) {
++		DBG("Multitech modem needs restart after USBCFG changed");
++		g_at_chat_send(data->chat, "AT#REBOOT", none_prefix,
++			telit_multitech_reboot_cb, modem, NULL);
+ 	}
+ }
+ 
+-- 
+2.7.4
+

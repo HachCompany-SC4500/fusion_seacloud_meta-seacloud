@@ -1,0 +1,25 @@
+From 2a5df0f8d0d5e6938da9fa97f0bef2e70c8d1243 Mon Sep 17 00:00:00 2001
+From: Guillaume Deroire <guillaume.deroire@hach.com>
+Date: Thu, 25 Jul 2019 16:18:57 +0200
+Subject: [PATCH] Hide the taskbar by default
+
+---
+ lxpanel/panel.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lxpanel/panel.in b/lxpanel/panel.in
+index 8d51814..d55bb40 100644
+--- a/lxpanel/panel.in
++++ b/lxpanel/panel.in
+@@ -13,7 +13,7 @@ Global {
+     alpha=0
+     setdocktype=1
+     setpartialstrut=1
+-    autohide=0
++    autohide=1
+     heightwhenhidden=0
+     usefontcolor=1
+     fontcolor=#ffffff
+-- 
+2.7.4
+

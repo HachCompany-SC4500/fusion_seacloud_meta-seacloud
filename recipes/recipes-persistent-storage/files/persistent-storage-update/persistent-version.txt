@@ -1,0 +1,5 @@
+# This file gives the version of the persistent partition.
+# Warning: version must be updated for each modifications
+# Format is xxx.yy
+# yy must have exactly 2 digits because string is converted into integer only by removing the dot
+PERSISTENT_VERSION=1.28

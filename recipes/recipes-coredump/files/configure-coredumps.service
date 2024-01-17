@@ -1,0 +1,9 @@
+[Unit]
+Description=Core dumps configuration service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/configure_coredumps.sh
+
+[Install]
+WantedBy=multi-user.target

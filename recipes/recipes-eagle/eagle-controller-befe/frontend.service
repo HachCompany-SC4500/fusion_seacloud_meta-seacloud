@@ -1,0 +1,27 @@
+[Unit]
+Description=Frontend application
+Requires=display-manager.service ts_uinput.service
+# Wants is a weaker version of Requires, if backend is stopped or crashed,
+# this won't have an effect on frontend.service
+Wants=backend.service
+# The frontend needs the network interfaces to be configured
+After=network.target display-manager.service backend.service ts_uinput.service
+
+[Service]
+Environment="DISPLAY=:0"
+Environment="PROCESS_NAME=frontend"
+Environment="CONTROLLER=Eagle"
+
+ExecStart=/usr/local/bin/eagle_frontend.AppImage
+# Add a delay to be sure service is started before dependent (frontend) are started
+# Current measure give 10s to start
+ExecStartPost=/bin/sleep 15
+Type=simple
+Restart=always
+User=_frontend
+WorkingDirectory=~
+PrivateTmp=yes
+UMask=0007
+
+[Install]
+WantedBy=graphical.target

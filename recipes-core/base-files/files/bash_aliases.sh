@@ -1,0 +1,5 @@
+export LS_OPTIONS='--color=auto'
+alias l='ls $LS_OPTIONS -CF'
+alias la='ls $LS_OPTIONS -A'
+alias ll='ls $LS_OPTIONS -alF'
+alias ls='ls $LS_OPTIONS'

@@ -1,0 +1,339 @@
+From 2770af85ac04fd14af2f6bcdf4d3967ed6f2e36f Mon Sep 17 00:00:00 2001
+From: Yu Watanabe <watanabe.yu+github@gmail.com>
+Date: Sat, 21 Jul 2018 23:07:53 +0900
+Subject: [PATCH] timedate: increment reference count of sd_bus_message
+
+The commit 5d280742b645a69a19e7f9131adc0c95f5c7fa07 introduces a
+barrier to suppress calling context_update_ntp_status() multiple times.
+However, it just stores the address of sd_bus_message object. So,
+when an address is reused on the subsequent message, then the status
+of NTP clients are not updated.
+
+This makes the stored message object is referenced by the context
+object. So, the subsequent message is on cirtainly different address.
+---
+ src/timedate/timedated.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/src/timedate/timedated.c b/src/timedate/timedated.c
+index 4beded5de0..6c957646ea 100644
+--- a/src/timedate/timedated.c
++++ b/src/timedate/timedated.c
+@@ -44,6 +44,7 @@ typedef struct Context {
+         char *zone;
+         bool local_rtc;
+         Hashmap *polkit_registry;
++        sd_bus_message *cache;
+ 
+         LIST_HEAD(UnitStatusInfo, units);
+ } Context;
+@@ -71,6 +72,7 @@ static void context_free(Context *c) {
+ 
+         free(c->zone);
+         bus_verify_polkit_async_registry_free(c->polkit_registry);
++        sd_bus_message_unref(c->cache);
+ 
+         while ((p = c->units)) {
+                 LIST_REMOVE(units, c->units, p);
+@@ -302,18 +304,20 @@ static int context_update_ntp_status(Context *c, sd_bus *bus, sd_bus_message *m)
+                 { "UnitFileState", "s", NULL, offsetof(UnitStatusInfo, unit_file_state) },
+                 {}
+         };
+-        static sd_bus_message *_m = NULL;
+         UnitStatusInfo *u;
+         int r;
+ 
+         assert(c);
+         assert(bus);
+ 
+-        /* Suppress multiple call of context_update_ntp_status() within single DBus transaction. */
+-        if (m && m == _m)
+-                return 0;
++        /* Suppress calling context_update_ntp_status() multiple times within single DBus transaction. */
++        if (m) {
++                if (m == c->cache)
++                        return 0;
+ 
+-        _m = m;
++                sd_bus_message_unref(c->cache);
++                c->cache = sd_bus_message_ref(m);
++        }
+ 
+         LIST_FOREACH(units, u, c->units) {
+                 _cleanup_(sd_bus_error_free) sd_bus_error error = SD_BUS_ERROR_NULL;
+-- 
+2.17.1
+
+From 3af0a96c0fcc623bd16649fc3640396a657cf9ef Mon Sep 17 00:00:00 2001
+From: Yu Watanabe <watanabe.yu+github@gmail.com>
+Date: Sun, 22 Jul 2018 23:10:02 +0900
+Subject: [PATCH] timedate: defer the property changed signal until job of
+ starting/stopping NTP service is finished
+
+Before this, the property changed signal is emitted immediately after
+StartUnit/StopUnit method is called. So, the running state of the NTP
+client service may not updated.
+This makes the timing of emitting property changed signal is deferred
+until job of starting/stopping NTP client service is completed.
+
+Fixes #9672.
+---
+ src/timedate/timedated.c | 78 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 65 insertions(+), 13 deletions(-)
+
+diff --git a/src/timedate/timedated.c b/src/timedate/timedated.c
+index 6c957646ea..012cbe0028 100644
+--- a/src/timedate/timedated.c
++++ b/src/timedate/timedated.c
+@@ -46,6 +46,9 @@ typedef struct Context {
+         Hashmap *polkit_registry;
+         sd_bus_message *cache;
+ 
++        sd_bus_slot *slot_job_removed;
++        char *path_ntp_unit;
++
+         LIST_HEAD(UnitStatusInfo, units);
+ } Context;
+ 
+@@ -74,6 +77,9 @@ static void context_free(Context *c) {
+         bus_verify_polkit_async_registry_free(c->polkit_registry);
+         sd_bus_message_unref(c->cache);
+ 
++        sd_bus_slot_unref(c->slot_job_removed);
++        free(c->path_ntp_unit);
++
+         while ((p = c->units)) {
+                 LIST_REMOVE(units, c->units, p);
+                 unit_status_info_free(p);
+@@ -345,17 +351,55 @@ static int context_update_ntp_status(Context *c, sd_bus *bus, sd_bus_message *m)
+         return 0;
+ }
+ 
+-static int unit_start_or_stop(UnitStatusInfo *u, sd_bus *bus, sd_bus_error *error, bool start) {
++static int match_job_removed(sd_bus_message *m, void *userdata, sd_bus_error *error) {
++        const char *path;
++        Context *c = userdata;
++        int r;
++
++        assert(c);
++        assert(m);
++
++        r = sd_bus_message_read(m, "uoss", NULL, &path, NULL, NULL);
++        if (r < 0) {
++                bus_log_parse_error(r);
++                return 0;
++        }
++
++        if (!streq_ptr(path, c->path_ntp_unit))
++                return 0;
++
++        (void) sd_bus_emit_properties_changed(sd_bus_message_get_bus(m), "/org/freedesktop/timedate1", "org.freedesktop.timedate1", "NTP", NULL);
++
++        c->slot_job_removed = sd_bus_slot_unref(c->slot_job_removed);
++        c->path_ntp_unit = mfree(c->path_ntp_unit);
++
++        return 0;
++}
++
++static int unit_start_or_stop(Context *c, UnitStatusInfo *u, sd_bus *bus, sd_bus_error *error, bool start) {
++        _cleanup_(sd_bus_message_unrefp) sd_bus_message *reply = NULL;
++        _cleanup_(sd_bus_slot_unrefp) sd_bus_slot *slot = NULL;
++        const char *path;
+         int r;
+ 
++        assert(c);
+         assert(u);
+         assert(bus);
+         assert(error);
+ 
+-        /* Call context_update_ntp_status() to update UnitStatusInfo before calling this. */
++        /* This method may be called frequently. Forget the previous job if it has not completed yet. */
++        c->slot_job_removed = sd_bus_slot_unref(c->slot_job_removed);
+ 
+-        if (streq(u->active_state, "active") == start)
+-                return 0;
++        r = sd_bus_match_signal_async(
++                        bus,
++                        &slot,
++                        "org.freedesktop.systemd1",
++                        "/org/freedesktop/systemd1",
++                        "org.freedesktop.systemd1.Manager",
++                        "JobRemoved",
++                        match_job_removed, NULL, c);
++        if (r < 0)
++                return r;
+ 
+         r = sd_bus_call_method(
+                 bus,
+@@ -364,13 +408,22 @@ static int unit_start_or_stop(UnitStatusInfo *u, sd_bus *bus, sd_bus_error *erro
+                 "org.freedesktop.systemd1.Manager",
+                 start ? "StartUnit" : "StopUnit",
+                 error,
+-                NULL,
++                &reply,
+                 "ss",
+                 u->name,
+                 "replace");
+         if (r < 0)
+                 return r;
+ 
++        r = sd_bus_message_read(reply, "o", &path);
++        if (r < 0)
++                return bus_log_parse_error(r);
++
++        r = free_and_strdup(&c->path_ntp_unit, path);
++        if (r < 0)
++                return log_oom();
++
++        c->slot_job_removed = TAKE_PTR(slot);
+         return 0;
+ }
+ 
+@@ -422,8 +475,9 @@ static int unit_enable_or_disable(UnitStatusInfo *u, sd_bus *bus, sd_bus_error *
+                         error,
+                         NULL,
+                         NULL);
+-         if (r < 0)
+-                 return r;
++        if (r < 0)
++                return r;
++
+         return 0;
+ }
+ 
+@@ -813,7 +867,7 @@ static int method_set_ntp(sd_bus_message *m, void *userdata, sd_bus_error *error
+                         if (q < 0)
+                                 r = q;
+ 
+-                        q = unit_start_or_stop(u, bus, error, enable);
++                        q = unit_start_or_stop(c, u, bus, error, enable);
+                         if (q < 0)
+                                 r = q;
+                 }
+@@ -827,17 +881,17 @@ static int method_set_ntp(sd_bus_message *m, void *userdata, sd_bus_error *error
+                         if (r < 0)
+                                 continue;
+ 
+-                        r = unit_start_or_stop(u, bus, error, enable);
++                        r = unit_start_or_stop(c, u, bus, error, enable);
+                         break;
+                 }
+ 
+-        else if (context_ntp_service_is_active(c) <= 0)
++        else
+                 LIST_FOREACH(units, u, c->units) {
+                         if (!streq(u->load_state, "loaded") ||
+                             !streq(u->unit_file_state, "enabled"))
+                                 continue;
+ 
+-                        r = unit_start_or_stop(u, bus, error, enable);
++                        r = unit_start_or_stop(c, u, bus, error, enable);
+                         break;
+                 }
+ 
+@@ -846,8 +900,6 @@ static int method_set_ntp(sd_bus_message *m, void *userdata, sd_bus_error *error
+ 
+         log_info("Set NTP to %sd", enable_disable(enable));
+ 
+-        (void) sd_bus_emit_properties_changed(bus, "/org/freedesktop/timedate1", "org.freedesktop.timedate1", "NTP", NULL);
+-
+         return sd_bus_reply_method_return(m, NULL);
+ }
+ 
+-- 
+2.17.1
+
+From 84a87726eec88e7b11c8aa633bca006a0c0fc435 Mon Sep 17 00:00:00 2001
+From: Yu Watanabe <watanabe.yu+github@gmail.com>
+Date: Tue, 15 Jan 2019 02:59:48 +0900
+Subject: [PATCH] timedate: treat 'activating' or 'inactivating' NTP client
+ status as 'active'
+
+When `timedatectl set-time` is called, NTP client may be in
+'activating' or something. For safety, let's treat such states as
+'active'.
+
+This also changes all unit file status except for 'masked' or 'disabled'
+are treated as 'enabled'.
+---
+ src/timedate/timedated.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/timedate/timedated.c b/src/timedate/timedated.c
+index e16888945c..12308bed42 100644
+--- a/src/timedate/timedated.c
++++ b/src/timedate/timedated.c
+@@ -160,7 +160,7 @@ static int context_ntp_service_is_active(Context *c) {
+         /* Call context_update_ntp_status() to update UnitStatusInfo before calling this. */
+ 
+         LIST_FOREACH(units, info, c->units)
+-                count += streq_ptr(info->active_state, "active");
++                count += !STRPTR_IN_SET(info->active_state, "inactive", "failed");
+ 
+         return count;
+ }
+@@ -174,7 +174,7 @@ static int context_ntp_service_is_enabled(Context *c) {
+         /* Call context_update_ntp_status() to update UnitStatusInfo before calling this. */
+ 
+         LIST_FOREACH(units, info, c->units)
+-                count += STRPTR_IN_SET(info->unit_file_state, "enabled", "enabled-runtime");
++                count += !STRPTR_IN_SET(info->unit_file_state, "masked", "masked-runtime", "disabled", "bad");
+ 
+         return count;
+ }
+-- 
+2.17.1
+
+From b4356b5720ae0974f1f8962e26562591dd0be9e9 Mon Sep 17 00:00:00 2001
+From: Yu Watanabe <watanabe.yu+github@gmail.com>
+Date: Tue, 15 Jan 2019 14:51:30 +0900
+Subject: [PATCH] timedate: refuse to set time when previous request is not
+ finished
+
+If `timedatectl set-time` is invoked right after `timedatectl set-ntp true`,
+then, the NTP service may not be started yet.
+
+Fixes #11420.
+---
+ src/timedate/timedated.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/src/timedate/timedated.c b/src/timedate/timedated.c
+index 12308bed42..eeb17b613e 100644
+--- a/src/timedate/timedated.c
++++ b/src/timedate/timedated.c
+@@ -523,6 +523,10 @@ static int property_get_can_ntp(
+         assert(reply);
+         assert(error);
+ 
++        if (c->slot_job_removed)
++                /* When the previous request is not finished, then assume NTP is enabled. */
++                return sd_bus_message_append(reply, "b", true);
++
+         r = context_update_ntp_status(c, bus, reply);
+         if (r < 0)
+                 return r;
+@@ -548,6 +552,10 @@ static int property_get_ntp(
+         assert(reply);
+         assert(error);
+ 
++        if (c->slot_job_removed)
++                /* When the previous request is not finished, then assume NTP is active. */
++                return sd_bus_message_append(reply, "b", true);
++
+         r = context_update_ntp_status(c, bus, reply);
+         if (r < 0)
+                 return r;
+@@ -735,6 +743,9 @@ static int method_set_time(sd_bus_message *m, void *userdata, sd_bus_error *erro
+         assert(m);
+         assert(c);
+ 
++        if (c->slot_job_removed)
++                return sd_bus_error_set(error, BUS_ERROR_AUTOMATIC_TIME_SYNC_ENABLED, "Previous request is not finished, refusing.");
++
+         r = context_update_ntp_status(c, bus, m);
+         if (r < 0)
+                 return sd_bus_error_set_errnof(error, r, "Failed to update context: %m");
+-- 
+2.17.1
+

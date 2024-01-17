@@ -1,0 +1,573 @@
+{
+  "@angular/animations": {
+    "7.2.15": "*"
+  },
+  "@angular/common": {
+    "7.2.15": "*"
+  },
+  "@angular/core": {
+    "7.2.15": "*"
+  },
+  "@angular/forms": {
+    "7.2.15": "*"
+  },
+  "@angular/http": {
+    "7.2.15": "*"
+  },
+  "@angular/platform-browser": {
+    "7.2.15": "*"
+  },
+  "@angular/platform-browser-dynamic": {
+    "7.2.15": "*"
+  },
+  "@angular/router": {
+    "7.2.15": "*"
+  },
+  "@ngu/carousel": {
+    "1.5.5": "*"
+  },
+  "@hapi/bourne": {
+    "1.3.2": "0a7095adea067243ce3283e1b56b8a8f453b242a"
+  },
+  "@koa/cors": {
+    "3.0.0": "df021b4df2dadf1e2b04d7c8ddf93ba2d42519cb"
+  },
+  "@types/accepts": {
+    "1.3.5": "c34bec115cfc746e04fe5a059df4ce7e7b391575"
+  },
+  "@types/body-parser": {
+    "1.17.1": "18fcf61768fb5c30ccc508c21d6fd2e8b3bf7897"
+  },
+  "@types/connect": {
+    "3.4.32": "aa0e9616b9435ccad02bc52b5b454ffc2c70ba28"
+  },
+  "@types/cookies": {
+    "0.7.2": "5e0560d46ed9998082dce799af1058dd6a49780a"
+  },
+  "@types/express": {
+    "4.17.1": "4cf7849ae3b47125a567dfee18bfca4254b88c5c"
+  },
+  "@types/express-serve-static-core": {
+    "4.16.9": "69e00643b0819b024bdede95ced3ff239bb54558"
+  },
+  "@types/http-assert": {
+    "1.5.1": "d775e93630c2469c2f980fc27e3143240335db3b"
+  },
+  "@types/keygrip": {
+    "1.0.1": "ff540462d2fb4d0a88441ceaf27d287b01c3d878"
+  },
+  "@types/koa": {
+    "2.0.49": "8ffc2ddbdd715a2c392a218c67e116cb07007234"
+  },
+  "@types/koa-compose": {
+    "3.2.4": "76a461634a59c3e13449831708bb9b355fb1548e"
+  },
+  "@types/koa__cors": {
+    "2.2.3": "227154b4c70439083b33c89627eb780a517cd05b"
+  },
+  "@types/mime": {
+    "2.0.1": "dc488842312a7f075149312905b5e3c0b054c79d"
+  },
+  "@types/node": {
+    "12.7.3": "*",
+    "12.7.5": "e19436e7f8e9b4601005d73673b6dc4784ffcc2f"
+  },
+  "@types/range-parser": {
+    "1.2.3": "7ee330ba7caafb98090bece86a5ee44115904c2c"
+  },
+  "@types/serve-static": {
+    "1.13.3": "eb7e1c41c4468272557e897e9171ded5e2ded9d1"
+  },
+  "@types/validator": {
+    "10.11.2": "48b60ca2cca927081f37a1ad1de3e25d04abc9f0"
+  },
+  "accepts": {
+    "1.3.7": "531bc726517a3b2b41f850021c6cc15eaab507cd"
+  },
+  "after": {
+    "0.8.2": "fedb394f9f0e02aa9768e702bda23b505fae7e1f"
+  },
+  "ansi-styles": {
+    "3.2.1": "41fbb20243e50b12be0f04b8dedbf07520ce841d"
+  },
+  "any-promise": {
+    "1.3.0": "abc6afeedcea52e809cdc0376aed3ce39635d17f"
+  },
+  "anymatch": {
+    "3.0.3": "2fb624fe0e84bccab00afee3d0006ed310f22f09"
+  },
+  "args": {
+    "5.0.1": "4bf298df90a4799a09521362c579278cc2fdd761"
+  },
+  "arraybuffer.slice": {
+    "0.0.7": "3bbc4275dd584cc1b10809b89d4e8b63a69e7675"
+  },
+  "async-limiter": {
+    "1.0.1": "dd379e94f0db8310b08291f9d64c3209766617fd"
+  },
+  "backo2": {
+    "1.0.2": "31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
+  },
+  "base64-arraybuffer": {
+    "0.1.5": "73926771923b5a19747ad666aa5cd4bf9c6e9ce8"
+  },
+  "base64id": {
+    "1.0.0": "47688cb99bb6804f0e06d3e763b1c32e57d8e6b6"
+  },
+  "better-assert": {
+    "1.0.2": "40866b9e1b9e0b55b481894311e68faffaebc522"
+  },
+  "binary-extensions": {
+    "2.0.0": "23c0df14f6a88077f5f986c0d167ec03c3d5537c"
+  },
+  "blob": {
+    "0.0.5": "d680eeef25f8cd91ad533f5b01eed48e64caf683"
+  },
+  "bowser": {
+    "2.5.3": "811b0a24219c566c9a6ab3402bc8a13f35a18a96"
+  },
+  "braces": {
+    "3.0.2": "3454e1a462ee8d599e236df336cd9ea4f8afe107"
+  },
+  "bytes": {
+    "3.1.0": "f6cf7933a360e0588fa9fde85651cdc7f805d1f6"
+  },
+  "cache-content-type": {
+    "1.0.1": "035cde2b08ee2129f4a8315ea8f00a00dba1453c"
+  },
+  "callsite": {
+    "1.0.0": "280398e5d664bd74038b6f0905153e6e8af1bc20"
+  },
+  "camelcase": {
+    "5.0.0": "03295527d58bd3cd4aa75363f35b2e8d97be2f42"
+  },
+  "camelize": {
+    "1.0.0": "164a5483e630fa4321e5af07020e531831b2609b"
+  },
+  "chalk": {
+    "2.4.2": "cd42541677a54333cf541a49108c1432b44c9424"
+  },
+  "chokidar": {
+    "3.0.2": "0d1cd6d04eb2df0327446188cd13736a3367d681"
+  },
+  "class-validator": {
+    "0.10.0": "5e5f8108fa200d5ce1906cd5537af102c072dbcd"
+  },
+  "co": {
+    "4.6.0": "6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
+  },
+  "co-body": {
+    "6.0.0": "965b9337d7f5655480787471f4237664820827e3"
+  },
+  "color-convert": {
+    "1.9.3": "bb71850690e1f136567de629d2d5471deda4c1e8"
+  },
+  "color-name": {
+    "1.1.3": "a7d0558bd89c42f795dd42328f740831ca53bc25"
+  },
+  "component-bind": {
+    "1.0.0": "00c608ab7dcd93897c0009651b1d3a8e1e73bbd1"
+  },
+  "component-emitter": {
+    "1.2.1": "137918d6d78283f7df7a6b7c5a63e140e69425e6"
+  },
+  "component-inherit": {
+    "0.0.3": "645fc4adf58b72b649d5cae65135619db26ff143"
+  },
+  "content-disposition": {
+    "0.5.3": "e130caf7e7279087c5616c2007d0485698984fbd"
+  },
+  "content-security-policy-builder": {
+    "2.1.0": "0a2364d769a3d7014eec79ff7699804deb8cfcbb"
+  },
+  "content-type": {
+    "1.0.4": "e138cc75e040c727b1966fe5e5f8c9aee256fe3b"
+  },
+  "cookie": {
+    "0.3.1": "e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
+  },
+  "cookies": {
+    "0.7.3": "7912ce21fbf2e8c2da70cf1c3f351aecf59dadfa"
+  },
+  "copy-to": {
+    "2.0.1": "2680fbb8068a48d08656b6098092bdafc906f4a5"
+  },
+  "core-js": {
+    "2.6.9": "6b4b214620c834152e179323727fc19741b084f2"
+  },
+  "dasherize": {
+    "2.0.0": "6d809c9cd0cf7bb8952d80fc84fa13d47ddb1308"
+  },
+  "dateformat": {
+    "3.0.3": "a6e37499a4d9a9cf85ef5872044d62901c9889ae"
+  },
+  "debug": {
+    "3.1.0": "5bb5a0672628b64149566ba16819e61518c67261",
+    "3.2.6": "e83d17de16d8a7efb7717edbe5fb10135eee629b",
+    "4.1.1": "3b72260255109c6b589cee050f1d516139664791"
+  },
+  "deep-equal": {
+    "1.0.1": "f5d260292b660e084eff4cdbc9f08ad3247448b5"
+  },
+  "delegates": {
+    "1.0.0": "84c6e159b81904fdca59a0ef44cd870d31250f9a"
+  },
+  "depd": {
+    "1.1.2": "9bcd52e14c097763e749b274c4346ed2e560b5a9",
+    "2.0.0": "b696163cc757560d09cf22cc8fad1571b79e76df"
+  },
+  "destroy": {
+    "1.0.4": "978857442c44749e4206613e37946205826abd80"
+  },
+  "dns-prefetch-control": {
+    "0.2.0": "73988161841f3dcc81f47686d539a2c702c88624"
+  },
+  "dont-sniff-mimetype": {
+    "1.1.0": "c7d0427f8bcb095762751252af59d148b0a623b2"
+  },
+  "ee-first": {
+    "1.1.1": "590c61156b0ae2f4f0255732a158b266bc56b21d"
+  },
+  "electron-reload": {
+    "1.5.0": "*"
+  },
+  "end-of-stream": {
+    "1.4.1": "ed29634d19baba463b6ce6b80a37213eab71ec43"
+  },
+  "engine.io": {
+    "3.3.2": "18cbc8b6f36e9461c5c0f81df2b830de16058a59"
+  },
+  "engine.io-client": {
+    "3.3.2": "04e068798d75beda14375a264bb3d742d7bc33aa"
+  },
+  "engine.io-parser": {
+    "2.1.3": "757ab970fbf2dfb32c7b74b033216d5739ef79a6"
+  },
+  "error-inject": {
+    "1.0.0": "e2b3d91b54aed672f309d950d154850fa11d4f37"
+  },
+  "escape-html": {
+    "1.0.3": "0258eae4d3d0c0974de1c169188ef0051d1d1988"
+  },
+  "escape-string-regexp": {
+    "1.0.5": "1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
+  },
+  "expect-ct": {
+    "0.2.0": "3a54741b6ed34cc7a93305c605f63cd268a54a62"
+  },
+  "fast-redact": {
+    "1.5.0": "302892f566750c4f5eec7b830bfc9bc473484034"
+  },
+  "fast-safe-stringify": {
+    "2.0.6": "04b26106cc56681f51a044cfc0d76cf0008ac2c2",
+    "2.0.7": "124aa885899261f68aedb42a7c080de9da608743"
+  },
+  "feature-policy": {
+    "0.3.0": "7430e8e54a40da01156ca30aaec1a381ce536069"
+  },
+  "fill-range": {
+    "7.0.1": "1919a6a7c75fe38b2c7c77e5198535da9acdda40"
+  },
+  "flatstr": {
+    "1.0.12": "c2ba6a08173edbb6c9640e3055b95e287ceb5931"
+  },
+  "frameguard": {
+    "3.1.0": "bd1442cca1d67dc346a6751559b6d04502103a22"
+  },
+  "fresh": {
+    "0.5.2": "3d8cadd90d976569fa835ab1f8e4b23a105605a7"
+  },
+  "glob-parent": {
+    "5.0.0": "1dc99f0f39b006d3e92c2c284068382f0c20e954"
+  },
+  "google-libphonenumber": {
+    "3.2.3": "5e5c138c81b8734ebbe5ed354f6cdd22e1b53e95"
+  },
+  "guid-typescript": {
+    "1.0.9": "e35f77003535b0297ea08548f5ace6adb1480ddc"
+  },
+  "hammerjs": {
+    "2.0.8": "*"
+  },
+  "has-binary2": {
+    "1.0.3": "7776ac627f3ea77250cfc332dab7ddf5e4f5d11d"
+  },
+  "has-cors": {
+    "1.1.0": "5e474793f7ea9843d1bb99c23eef49ff126fff39"
+  },
+  "has-flag": {
+    "3.0.0": "b5d454dc2199ae225699f3467e5a07f3b955bafd"
+  },
+  "helmet": {
+    "3.20.1": "802fcb39ac6865208cbc6879d3502e582c6f777e"
+  },
+  "helmet-crossdomain": {
+    "0.4.0": "5f1fe5a836d0325f1da0a78eaa5fd8429078894e"
+  },
+  "helmet-csp": {
+    "2.9.0": "8524886b08c7f7d611cb5f36eae453dd604efd4c"
+  },
+  "hide-powered-by": {
+    "1.1.0": "be3ea9cab4bdb16f8744be873755ca663383fa7a"
+  },
+  "hpkp": {
+    "2.0.0": "10e142264e76215a5d30c44ec43de64dee6d1672"
+  },
+  "hsts": {
+    "2.2.0": "09119d42f7a8587035d027dda4522366fe75d964"
+  },
+  "http-assert": {
+    "1.4.1": "c5f725d677aa7e873ef736199b89686cceb37878"
+  },
+  "http-errors": {
+    "1.7.3": "6c619e4f9c60308c38519498c14fbb10aacebb06"
+  },
+  "iconv-lite": {
+    "0.4.24": "2022b4b25fbddc21d2f524974a474aafe733908b"
+  },
+  "ienoopen": {
+    "1.1.0": "411e5d530c982287dbdc3bb31e7a9c9e32630974"
+  },
+  "indexof": {
+    "0.0.1": "82dc336d232b9062179d05ab3293a66059fd435d"
+  },
+  "inflation": {
+    "2.0.0": "8b417e47c28f925a45133d914ca1fd389107f30f"
+  },
+  "inherits": {
+    "2.0.4": "0fa2c64f932917c3433a0ded55363aae37416b7c"
+  },
+  "is-binary-path": {
+    "2.1.0": "ea1f7f3b80f064236e83470f86c09c254fb45b09"
+  },
+  "is-extglob": {
+    "2.1.1": "a88c02535791f02ed37c76a1b9ea9773c833f8c2"
+  },
+  "is-generator-function": {
+    "1.0.7": "d2132e529bb0000a7f80794d4bdf5cd5e5813522"
+  },
+  "is-glob": {
+    "4.0.1": "7567dbe9f2f5e2467bc77ab83c4a29482407a5dc"
+  },
+  "is-number": {
+    "7.0.0": "7535345b896734d5f80c4d06c50955527a14f12b"
+  },
+  "isarray": {
+    "0.0.1": "8a18acfca9a8f4177e09abfc6038939b05d1eedf",
+    "2.0.1": "a37d94ed9cda2d59865c9f76fe596ee1f338741e"
+  },
+  "jmespath": {
+    "0.15.0": "a3f222a9aae9f966f5d27c796510e28091764217"
+  },
+  "keygrip": {
+    "1.0.3": "399d709f0aed2bab0a059e0cdd3a5023a053e1dc"
+  },
+  "koa": {
+    "2.8.1": "98e13b267ab8a1868f015a4b41b5a52e31457ce5"
+  },
+  "koa-bodyparser": {
+    "4.2.1": "4d7dacb5e6db1106649b595d9e5ccb158b6f3b29"
+  },
+  "koa-compose": {
+    "3.2.1": "a85ccb40b7d986d8e5a345b3a1ace8eabcf54de7",
+    "4.1.0": "507306b9371901db41121c812e923d0d67d3e877"
+  },
+  "koa-convert": {
+    "1.2.0": "da40875df49de0539098d1700b50820cebcd21d0"
+  },
+  "koa-helmet": {
+    "5.1.0": "b6273b9633db3e9e74182e7b10e75ff86b57cbff"
+  },
+  "koa-is-json": {
+    "1.0.0": "273c07edcdcb8df6a2c1ab7d59ee76491451ec14"
+  },
+  "koa-response-time": {
+    "2.1.0": "bc8473207255fcbddaf10004bd7a8e59f2e948c9"
+  },
+  "koa-router": {
+    "7.4.0": "aee1f7adc02d5cb31d7d67465c9eacc825e8c5e0"
+  },
+  "leven": {
+    "2.1.0": "c2e7a9f772094dee9d34202ae8acce4687875580"
+  },
+  "media-typer": {
+    "0.3.0": "8710d7af0aa626f8fffa1ce00168545263255748"
+  },
+  "methods": {
+    "1.1.2": "5529a4d67654134edcc5266656835b0f851afcee"
+  },
+  "mime-db": {
+    "1.40.0": "a65057e998db090f732a68f6c276d387d4126c32"
+  },
+  "mime-types": {
+    "2.1.24": "b6f8d0b3e951efb77dedeca194cff6d16f676f81"
+  },
+  "mri": {
+    "1.1.4": "7cb1dd1b9b40905f1fac053abe25b6720f44744a"
+  },
+  "ms": {
+    "2.0.0": "5608aeadfc00be6c2901df5f9861788de0d597c8",
+    "2.1.2": "d09d1f357b443f493382a8eb3ccd183872ae6009"
+  },
+  "negotiator": {
+    "0.6.2": "feacf7ccf525a77ae9634436a64883ffeca346fb"
+  },
+  "nocache": {
+    "2.1.0": "120c9ffec43b5729b1d5de88cd71aa75a0ba491f"
+  },
+ "normalize-path": {
+    "3.0.0": "0dcd69ff23a1c9b11fd0978316644a0388216a65"
+  },
+  "object-component": {
+    "0.0.3": "f0c69aa50efc95b866c186f400a33769cb2f1291"
+  },
+  "on-finished": {
+    "2.3.0": "20f1336481b083cd75337992a16971aa2d906947"
+  },
+  "once": {
+    "1.4.0": "583b1aa775961d4b113ac17d9c50baef9dd76bd1"
+  },
+  "only": {
+    "0.0.2": "2afde84d03e50b9a8edc444e30610a70295edfb4"
+  },
+  "parseqs": {
+    "0.0.5": "d5208a3738e46766e291ba2ea173684921a8b89d"
+  },
+  "parseuri": {
+    "0.0.5": "80204a50d4dbb779bfdc6ebe2778d90e4bce320a"
+  },
+  "parseurl": {
+    "1.3.3": "9da19e7bee8d12dff0513ed5b76957793bc2e8d4"
+  },
+  "path-to-regexp": {
+    "1.7.0": "59fde0f435badacba103a84e9d3bc64e96b9937d"
+  },
+  "picomatch": {
+    "2.0.7": "514169d8c7cd0bdbeecc8a2609e34a7163de69f6"
+  },
+  "pino": {
+    "5.13.3": "*"
+  },
+  "pino-pretty": {
+    "3.2.1": "db13b793f7074f25051306ee625b6feabae056d9"
+  },
+  "pino-std-serializers": {
+    "2.4.2": "cb5e3e58c358b26f88969d7e619ae54bdfcc1ae1"
+  },
+  "pump": {
+    "3.0.0": "b4a2116815bde2f4e1ea602354e8c75565107a64"
+  },
+  "qs": {
+    "6.8.0": "87b763f0d37ca54200334cd57bb2ef8f68a1d081"
+  },
+  "quick-format-unescaped": {
+    "3.0.2": "0137e94d8fb37ffeb70040535111c378e75396fb"
+  },
+  "raw-body": {
+    "2.4.1": "30ac82f98bb5ae8c152e67149dac8d55153b168c"
+  },
+  "readdirp": {
+    "3.1.2": "fa85d2d14d4289920e4671dead96431add2ee78a"
+  },
+  "readable-stream": {
+    "3.4.0": "a51c26754658e0a3c21dbf59163bd45ba6f447fc"
+  },
+  "referrer-policy": {
+    "1.2.0": "b99cfb8b57090dc454895ef897a4cc35ef67a98e"
+  },
+  "rxjs": {
+    "6.5.3": "*"
+  },
+  "safe-buffer": {
+    "5.1.2": "991ec69d296e0313747d59bdfd2b745c35f8828d",
+    "5.2.0": "b74daec49b1148f88c64b68d49b1e815c1f2f519"
+  },
+  "safer-buffer": {
+    "2.1.2": "44fa161b0187b9549dd84bb91802f9bd8385cd6a"
+  },
+  "setprototypeof": {
+    "1.1.1": "7e95acb24aa92f5885e0abef5ba131330d4ae683"
+  },
+  "socket.io": {
+    "2.2.0": "f0f633161ef6712c972b307598ecd08c9b1b4d5b"
+  },
+  "socket.io-adapter": {
+    "1.1.1": "2a805e8a14d6372124dd9159ad4502f8cb07f06b"
+  },
+  "socket.io-client": {
+    "2.2.0": "84e73ee3c43d5020ccc1a258faeeb9aec2723af7"
+  },
+  "socket.io-parser": {
+    "3.3.0": "2b52a96a509fdf31440ba40fed6094c7d4f1262f"
+  },
+  "sonic-boom": {
+    "0.7.6": "*"
+  },
+  "split2": {
+    "3.1.1": "c51f18f3e06a8c4469aaab487687d8d956160bb6"
+  },
+  "statuses": {
+    "1.5.0": "161c7dac177659fd9811f43771fa99381478628c"
+  },
+  "string_decoder": {
+    "1.3.0": "42f114594a46cf1a8e30b0a84f56c78c3edac21e"
+  },
+  "supports-color": {
+    "5.5.0": "e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
+  },
+  "to-array": {
+    "0.1.4": "17e6c11f73dd4f3d74cda7a4ff3238e9ad9bf890"
+  },
+  "to-regex-range": {
+    "5.0.1": "1648c44aae7c8d988a326018ed72f5b4dd0392e4"
+  },
+  "toidentifier": {
+    "1.0.0": "7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
+  },
+  "tslib": {
+    "1.10.0": "c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
+  },
+  "type-is": {
+    "1.6.18": "4e552cd05df09467dcbc4ef739de89f2cf37c131"
+  },
+  "unpipe": {
+    "1.0.0": "b2bf4ee8514aae6165b4817829d21b2ef49904ec"
+  },
+  "urijs": {
+    "1.19.1": "5b0ff530c0cbde8386f6342235ba5ca6e995d25a"
+  },
+  "util-deprecate": {
+    "1.0.2": "450d4dc9fa70de732762fbd2d4a28981419a0ccf"
+  },
+  "uws": {
+    "10.148.1": "fd1a79cf6118a388e0a1bed8a1397030d2c4fd2c"
+  },
+  "validator": {
+    "11.1.0": "ac18cac42e0aa5902b603d7a5d9b7827e2346ac4"
+  },
+  "vary": {
+    "1.1.2": "2299f02c6ded30d4a5961b0b9f74524a18f634fc"
+  },
+  "wrappy": {
+    "1.0.2": "b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
+  },
+  "ws": {
+    "6.1.4": "5b5c8800afab925e94ccb29d153c8d02c1776ef9"
+  },
+  "x-xss-protection": {
+    "1.2.0": "3170498ff8e7e8159f4896b27fa4d4810c2ff486"
+  },
+  "xmlhttprequest-ssl": {
+    "1.5.5": "c2876b06168aadc40e57d97e81191ac8f4398b3e"
+  },
+  "yeast": {
+    "0.1.2": "008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
+  },
+  "ylru": {
+    "1.2.1": "f576b63341547989c1de7ba288760923b27fe84f"
+  },
+  "zone.js": {
+    "0.8.29": "*"
+  }
+}
+

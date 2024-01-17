@@ -1,0 +1,20 @@
+[Unit]
+Description=XServer
+
+[Service]
+# Increase the width and height of the framebuffer by one pixel
+# because of a bug in Electron: the values reported by the methods
+# 'innerWidth()' and 'innerHeight()' in the application are lowered by 1.
+# This workaround make those two methods return the expected values.
+#
+# Once the bug in Electron is fixed (unlikely soon since it's a three years old
+# bug), this command can be removed.
+ExecStartPre=fbset -a -xres 321 -yres 241
+
+ExecStart=/usr/local/bin/xserver.sh
+Type=forking
+Restart=always
+
+[Install]
+Alias=display-manager.service
+

@@ -1,0 +1,26 @@
+##############################################################################
+# This files creates rules to add tslib filter on top of cypress touchscreen #
+##############################################################################
+
+# There are a number of modifiers that are allowed to be used in some
+# of the different fields. They provide the following subsitutions:
+#
+# %n the "kernel number" of the device.
+#    For example, 'sda3' has a "kernel number" of '3'
+# %e the smallest number for that name which does not matches an existing node
+# %k the kernel name for the device
+# %M the kernel major number for the device
+# %m the kernel minor number for the device
+# %b the bus id for the device
+# %c the string returned by the PROGRAM
+# %s{filename} the content of a sysfs attribute
+# %% the '%' char itself
+#
+
+# Create /dev/input/ts link: ts_uinput is looking for /dev/input/ts by default
+# Add TAG and ENV to trigger the ts_uinput service
+SUBSYSTEM=="input", ATTRS{name}=="cyttsp5_mt", SYMLINK+="input/ts", TAG+="systemd" ENV{SYSTEMD_WANTS}="ts_uinput.service"
+
+# Create symbolic link just to help to identify devices but there are not used by any applications
+SUBSYSTEM=="input", ATTRS{name}=="cyttsp5_mt", SYMLINK+="input/raw_touchscreen"
+SUBSYSTEM=="input", ATTRS{name}=="ts_uinput", SYMLINK+="input/filtered_touchscreen"

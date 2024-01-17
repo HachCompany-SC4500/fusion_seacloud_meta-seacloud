@@ -1,0 +1,41 @@
+--- a/azure_uamqp_c/connection.h
++++ b/inc/azure_uamqp_c/connection.h
+@@ -93,6 +93,8 @@
+     MOCKABLE_FUNCTION(, void, connection_destroy_endpoint, ENDPOINT_HANDLE, endpoint);
+     MOCKABLE_FUNCTION(, int, connection_encode_frame, ENDPOINT_HANDLE, endpoint, AMQP_VALUE, performative, PAYLOAD*, payloads, size_t, payload_count, ON_SEND_COMPLETE, on_send_complete, void*, callback_context);
+     MOCKABLE_FUNCTION(, void, connection_set_trace, CONNECTION_HANDLE, connection, bool, trace_on);
++    MOCKABLE_FUNCTION(, int, connection_get_state, CONNECTION_HANDLE, connection, CONNECTION_STATE, *p_cstate);
++
+
+ #ifdef __cplusplus
+ }
+
+
+--- a/src/connection.c
++++ b/src/connection.c
+@@ -1913,3 +1913,23 @@
+
+     return result;
+ }
++
++int connection_get_state(CONNECTION_HANDLE connection, CONNECTION_STATE *p_cstate)
++{
++    int result;
++    if (connection == NULL)
++    {
++        result = __LINE__;
++    }
++    else if (p_cstate == NULL)
++    {
++        result = __LINE__;
++    }
++    else
++    {
++        *p_cstate = connection->connection_state;
++                result = 0;
++    }
++    return result;
++}
++
+
+

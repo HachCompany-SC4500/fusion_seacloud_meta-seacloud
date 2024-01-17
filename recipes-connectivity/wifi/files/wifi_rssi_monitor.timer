@@ -1,0 +1,10 @@
+[Unit]
+Description=Wi-Fi RSSI monitor timer
+After=connman.service
+
+[Timer]
+# Only once, 30 seconds after the first activation (to let connman set up Wi-Fi interface, if it's properly configured)
+OnActiveSec=30sec
+
+[Install]
+WantedBy=multi-user.target

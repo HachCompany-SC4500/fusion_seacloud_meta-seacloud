@@ -1,0 +1,34 @@
+From 50ab87177f344706e3732c06d911b0bb85a22410 Mon Sep 17 00:00:00 2001
+From: Guillaume Deroire <guillaume.deroire@hach.com>
+Date: Thu, 25 Jul 2019 14:03:28 +0200
+Subject: [PATCH] Always launch gpicview in fullscreen
+
+---
+ openbox/rc.xml.in | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/openbox/rc.xml.in b/openbox/rc.xml.in
+index d386b8a..68603be 100644
+--- a/openbox/rc.xml.in
++++ b/openbox/rc.xml.in
+@@ -749,6 +749,17 @@
+ 
+   # end of the example
+ -->
++
++<!--
++  To get the right property value with xprop for a graphical application:
++  * launch the application
++  * launch from a shell: obxprop | grep '_OB_APP_'
++  * click on the application you have started and it will list the properties in the console
++-->
++
++  <application name="gpicview">
++      <fullscreen>yes</fullscreen>
++  </application>
+ </applications>
+ 
+ </openbox_config>
+-- 
+2.7.4
+

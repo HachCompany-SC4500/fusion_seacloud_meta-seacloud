@@ -1,0 +1,9 @@
+# Allow _backend user to execute system configuration scripts with sudo
+_backend ALL=(root) NOPASSWD: /usr/bin/timedatectl
+_backend ALL=(root) NOPASSWD: /usr/local/bin/config_*.py
+_backend ALL=(root) NOPASSWD: /usr/local/bin/lsscd
+_backend ALL=(root) NOPASSWD: /usr/local/bin/lsps
+_backend ALL=(root) NOPASSWD: /sbin/ifconfig
+_backend ALL=(root) NOPASSWD: /usr/local/bin/config_modem.py
+_backend ALL=(root) NOPASSWD: /usr/local/bin/config_wifi.py
+_backend ALL=(root) NOPASSWD: /usr/local/bin/swupdate-helper.py

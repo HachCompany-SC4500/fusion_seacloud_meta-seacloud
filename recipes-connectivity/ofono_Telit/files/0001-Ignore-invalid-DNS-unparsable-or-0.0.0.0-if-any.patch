@@ -1,0 +1,93 @@
+From 96e6805306adc5449b5880b009039feb6a54c6b6 Mon Sep 17 00:00:00 2001
+From: Guillaume Deroire <guillaume.deroire@hach.com>
+Date: Mon, 21 Feb 2022 17:20:41 +0100
+Subject: [PATCH] Ignore invalid DNS (unparsable or 0.0.0.0) if any
+
+Seen with a T-mobile SIM card on Bottrop site which reports 0.0.0.0 as
+secondary DNS.
+Unfiltered, the DNS 0.0.0.0 reaches the systemd-resolved layer and cancels
+the DNS processing loop. As a result, resolv.conf is not properly updated
+with other valid DNS.
+---
+ drivers/atmodem/gprs-context.c | 44 +++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 39 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/atmodem/gprs-context.c b/drivers/atmodem/gprs-context.c
+index 42ec556..65828f8 100644
+--- a/drivers/atmodem/gprs-context.c
++++ b/drivers/atmodem/gprs-context.c
+@@ -32,6 +32,10 @@
+ 
+ #include <glib.h>
+ 
++#include <sys/socket.h>
++#include <netinet/in.h>
++#include <arpa/inet.h>
++
+ #include <ofono/log.h>
+ #include <ofono/modem.h>
+ #include <ofono/gprs-context.h>
+@@ -76,6 +80,15 @@ static void ppp_debug(const char *str, void *data)
+ 	ofono_info("%s: %s", (const char *) data, str);
+ }
+ 
++static gboolean ipv4_addr_is_valid(const char *addr)
++{
++	struct in_addr sin_addr;
++	if (inet_aton(addr, &sin_addr) != 0) {
++		return (sin_addr.s_addr != 0);
++	}
++	return FALSE;
++}
++
+ static void ppp_connect(const char *interface, const char *local,
+ 			const char *remote,
+ 			const char *dns1, const char *dns2,
+@@ -84,21 +97,42 @@ static void ppp_connect(const char *interface, const char *local,
+ 	struct ofono_gprs_context *gc = user_data;
+ 	struct gprs_context_data *gcd = ofono_gprs_context_get_data(gc);
+ 	const char *dns[3];
++	int dns_index = 0;
+ 
+ 	DBG("");
+ 
+-	dns[0] = dns1;
+-	dns[1] = dns2;
++	ofono_info("IP: %s", local);
++	ofono_info("Unfiltered DNS: '%s', '%s'", dns1, dns2);
++
++	dns[0] = 0;
++	dns[1] = 0;
+ 	dns[2] = 0;
+ 
+-	ofono_info("IP: %s", local);
+-	ofono_info("DNS: %s, %s", dns1, dns2);
++	if (ipv4_addr_is_valid(dns1)) {
++		dns[dns_index]= dns1;
++		dns_index++;
++	}
++	else {
++		ofono_info("Dns1 is '%s' (rejected)", dns1);
++	}
++	if (ipv4_addr_is_valid(dns2)) {
++		dns[dns_index]= dns2;
++		dns_index++;
++	}
++	else {
++		ofono_info("Dns2 is '%s' (rejected)", dns2);
++	}
++	ofono_info("Filtered DNS: '%s', '%s'", dns[0]?dns[0]:"", dns[1]?dns[1]:"");
++
+ 
+ 	gcd->state = STATE_ACTIVE;
+ 	ofono_gprs_context_set_interface(gc, interface);
+ 	ofono_gprs_context_set_ipv4_address(gc, local, TRUE);
+ 	ofono_gprs_context_set_ipv4_netmask(gc, STATIC_IP_NETMASK);
+-	ofono_gprs_context_set_ipv4_dns_servers(gc, dns);
++
++	if (dns_index != 0) {
++		ofono_gprs_context_set_ipv4_dns_servers(gc, dns);
++	}
+ 
+ 	CALLBACK_WITH_SUCCESS(gcd->cb, gcd->cb_data);
+ }
