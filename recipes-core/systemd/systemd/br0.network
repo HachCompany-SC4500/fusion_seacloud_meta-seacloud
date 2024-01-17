@@ -1,0 +1,30 @@
+[Match]
+Name=br0
+
+[Network]
+# The default is to request an IP address with DHCP.
+DHCP=yes
+
+# Let systemd-networkd configure a fallback as an initial IP address and drop it
+# when it gets a DHCP lease.
+# Such a fallback address belong to the sub-network 169.254.0.0/16.
+# It must only be enabled when DHCP is enabled.
+LinkLocalAddressing=yes
+
+# Default values for DHCPServer= and IPMasquerade= are specified here because
+# config_sharenet.py assumes that they are defined and emits a warning when
+# it's not the case.
+DHCPServer=no
+IPMasquerade=no
+
+[DHCP]
+# Use MAC addresses as device identifier on the network.
+# This allows DHCP servers to properly recognize a controller to keep assigning
+# to it the same IP address, even after a system update.
+ClientIdentifier=mac
+RouteMetric=2048
+
+[DHCPServer]
+# The 15 first IP addresses of the DHCP server's addressable range are reserved
+# for potential future system needs.
+PoolOffset=16

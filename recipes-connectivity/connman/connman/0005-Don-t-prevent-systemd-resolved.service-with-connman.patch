@@ -1,0 +1,29 @@
+From ac5b9137c29f355aa574f2f0a5cfd4ea581b39b8 Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Thu, 25 Mar 2021 16:55:42 +0100
+Subject: [PATCH] Don't prevent systemd-resolved.service when connman.service
+ is running. This does not cause any conflict. This Conflict= directive
+ because starting both connman.service and systemd-resolved.service has been
+ seen as inappropriate. However, in our case we need both as fec0 and fec1
+ (wired interfaces) are managed by systemd-networkd while wlan0 (wifi) and
+ ppp0 (cellular) are managed by connman. by connman.
+
+---
+ connman.service | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/connman.service.in b/src/connman.service.in
+index f399f08..97b28b9 100644
+--- a/src/connman.service.in
++++ b/src/connman.service.in
+@@ -6,7 +6,6 @@ RequiresMountsFor=/var/lib/connman
+ After=dbus.service network-pre.target systemd-sysusers.service
+ Before=network.target multi-user.target shutdown.target
+ Wants=network.target
+-Conflicts=systemd-resolved.service
+ # only if not NFS mount, connman will disconnect your rootfs otherwise!
+ ConditionKernelCommandLine=!root=/dev/nfs
+ # As network connection settings are located on the persistent partition,
+-- 
+2.17.1
+

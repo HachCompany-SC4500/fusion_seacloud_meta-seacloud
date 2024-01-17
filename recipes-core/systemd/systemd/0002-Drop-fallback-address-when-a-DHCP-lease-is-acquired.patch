@@ -1,0 +1,29 @@
+From a66fa52eb3d3f922a761b42e10507cee42f9f62f Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Tue, 27 Apr 2021 15:23:08 +0200
+Subject: [PATCH] Drop fallback address when a DHCP lease is acquired.
+
+This is an adapted version of the commit 8ccae2dd2d68f715d4c962ee4bab4827b4500540 from https://github.com/systemd/systemd that is included in systemd 248
+---
+ src/network/networkd-dhcp4.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/network/networkd-dhcp4.c b/src/network/networkd-dhcp4.c
+index 1ab93b635f..4025fc3400 100644
+--- a/src/network/networkd-dhcp4.c
++++ b/src/network/networkd-dhcp4.c
+@@ -582,6 +582,11 @@ static void dhcp4_handler(sd_dhcp_client *client, int event, void *userdata) {
+                                 link_enter_failed(link);
+                                 return;
+                         }
++
++                        r = sd_ipv4ll_stop(link->ipv4ll);
++                        if (r < 0) {
++                                log_link_warning_errno(link, r, "Failed to drop IPv4 link-local address, ignoring: %m");
++                        }
+                         break;
+                 default:
+                         if (event < 0)
+-- 
+2.20.1
+

@@ -1,0 +1,25 @@
+From f2d133f69b6916ea5e2194b8865201ff5003dbaf Mon Sep 17 00:00:00 2001
+From: Guillaume Deroire <guillaume.deroire@hach.com>
+Date: Tue, 13 Jun 2017 11:39:48 +0200
+Subject: [PATCH] Customized version
+
+---
+ src/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/main.c b/src/main.c
+index 1976369..567f1f9 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -624,7 +624,7 @@ int main(int argc, char *argv[])
+ 	g_option_context_free(context);
+ 
+ 	if (option_version) {
+-		printf("%s\n", VERSION);
++		printf("%s-patched\n", VERSION);
+ 		exit(0);
+ 	}
+ 
+-- 
+2.7.4
+

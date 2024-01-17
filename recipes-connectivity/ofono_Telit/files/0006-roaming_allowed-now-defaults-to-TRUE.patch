@@ -1,0 +1,35 @@
+From c186c97e76094eed544c7e88d33267ca0bc7ec8b Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Tue, 4 Jan 2022 17:26:20 +0100
+Subject: [PATCH] roaming_allowed now defaults to TRUE
+
+Most of the SIM cards that are used are Telenor SIM cards provided by Hach to the customer.
+Telenor is a Norwegian operator, but those SIM cards are used in multiple countries in Europe
+and in the USA. Therefore, roaming must be enabled for them to operate.
+
+Enabling the roaming in the modem configuration scripts is too late. At this point the
+modem attached to the network already in roaming mode and ofono detects it: ofono then
+disable the modem as roaming is disallowed by default. It follows that two configuration
+attempts are necessary to initiate a connection.
+
+With roaming enabled by default, ofono doesn't stop the modem so the connection can be initiated.
+---
+ src/gprs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/gprs.c b/src/gprs.c
+index 377eced7..dd19d4bc 100644
+--- a/src/gprs.c
++++ b/src/gprs.c
+@@ -3357,7 +3357,7 @@ static void gprs_load_settings(struct ofono_gprs *gprs, const char *imsi)
+ 
+ 	if (error) {
+ 		g_error_free(error);
+-		gprs->roaming_allowed = FALSE;
++		gprs->roaming_allowed = TRUE;
+ 		g_key_file_set_boolean(gprs->settings, SETTINGS_GROUP,
+ 					"RoamingAllowed",
+ 					gprs->roaming_allowed);
+-- 
+2.17.1
+

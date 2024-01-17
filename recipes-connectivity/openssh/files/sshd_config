@@ -1,0 +1,79 @@
+## OpenSSH server configuration
+##
+## Commented configuration lines, beginning with one '#', corresponds to the
+## default value; thus are equivalent with or whithout the prepending '#'
+## Modified value are followed by a comment reminding the default.
+##
+## The defaults value showed below are valid for OpenSSH 7.8p1
+
+## Network configuration
+#AddressFamily any
+#Port 22
+ClientAliveCountMax 4 # default: 3
+ClientAliveInterval 15 # default: 0; meaning 'ClientAlive' is disabled
+## 'TCPKeepAlive' is not needed as the tunneled 'ClientAlive' mechanism is used
+TCPKeepAlive no # default: yes
+
+## Ciphers and keying
+#HostKey /etc/ssh/ssh_host_rsa_key
+#HostKey /etc/ssh/ssh_host_ecdsa_key
+#HostKey /etc/ssh/ssh_host_ed25519_key
+
+#FingerprintHash sha256
+RekeyLimit 1G 2h # default: default none; the value of default depends on the cipher used
+
+## Allowed users to authenticate
+#PermitRootLogin without-password
+AuthorizedKeysFile .ssh/authorized_keys # default: .ssh/authorized_keys .ssh/authorized_keys2
+AllowGroups ssh-allowed ssh-allowed-tmp # no default: no restriction based on the user groups
+RevokedKeys /etc/ssh/revoked_keys # default: none
+
+## Authentication methods
+AuthenticationMethods publickey # default: any
+#PubkeyAuthentication yes
+#PermitEmptyPasswords no
+PasswordAuthentication no # default: yes
+ChallengeResponseAuthentication no # default: yes
+#HostbasedAuthentication no
+#UsePAM no
+#UseDNS no
+
+## Anti DOS measures
+LoginGraceTime 1m # default: 120 (2m)
+#MaxAuthTries 6
+## randomly drop new connections once 10 unauthenticated ones are already opened
+#MaxStartups 10:30:100
+
+# Disabled the below commented insecure/Week Ciphers and MACs from the Supported list as its not recommended.
+# 3des-cbc, aes128-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se,hmac-sha1-96
+# hmac-sha1,hmac-md5, hmac-md5-96, hmac-sha1-96-etm@openssh.com, hmac-md5-etm@openssh.com, hmac-md5-96-etm@openssh.com,umac-64@openssh.com,umac-64-etm@openssh.com,hmac-sha1-etm@openssh.com
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com
+MACs hmac-sha2-256,hmac-sha2-512,umac-128@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com
+
+## Logging
+#SyslogFacility AUTH
+#LogLevel INFO
+
+## Misc
+DisableForwarding yes # default: no
+#StrictModes yes
+#PermitTunnel no
+#PermitUserEnvironment no
+#PermitUserRC yes
+#PermitTTY yes
+#GatewayPorts no
+#ExposeAuthInfo no
+#Compression yes
+#VersionAddendum none
+#PrintLastLog yes
+#PrintMotd yes
+#Banner none
+#PidFile /var/run/sshd.pid
+#MaxSessions 10
+#ChrootDirectory none
+
+# override default of no subsystems
+Subsystem       sftp    internal-sftp
+
+## Certificate support
+TrustedUserCAKeys /etc/ssh/CA.pub

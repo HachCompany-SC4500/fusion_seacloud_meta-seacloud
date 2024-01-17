@@ -1,0 +1,14 @@
+[Unit]
+Description=Garbage collector core path
+# There is no need to set After/Requires here. See [Install] section above
+# Only active when controller is in development mode, otherwise generation of core dump files is disabled
+ConditionPathExists=/media/persistent/development
+
+[Path]
+PathChanged=/core_dumps/
+Unit=garbage_collector@core.service
+
+[Install]
+# No install section is needed. 
+# This .path is started/stopped by the unit listed in [Path] section, 
+# which is initially started by its corresponding .timer unit.

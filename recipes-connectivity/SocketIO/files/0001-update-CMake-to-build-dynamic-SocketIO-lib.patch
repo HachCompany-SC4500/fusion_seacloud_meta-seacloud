@@ -1,0 +1,94 @@
+From a82d0cb1943fbdb17054b599474119dbdb7716f8 Mon Sep 17 00:00:00 2001
+From: Manikantan Ravichandran <mravichandran@witekio.com>
+Date: Mon, 1 Feb 2021 20:28:44 +0100
+Subject: [PATCH] update CMake to build dynamic SocketIO lib
+
+---
+ CMakeLists.txt | 50 +++++++++++---------------------------------------
+ 1 file changed, 11 insertions(+), 39 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8c2fad3..3f1ea44 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+-PROJECT(sioclient)
++PROJECT(Socketio)
+ 
+-option(BUILD_SHARED_LIBS "Build the shared library" OFF)
++option(BUILD_SHARED_LIBS "Build the shared library" ON)
+ option(Boost_USE_STATIC_LIBS "Use Boost static version" ON)
+ 
+ set(MAJOR 1)
+@@ -27,58 +27,30 @@ aux_source_directory(${CMAKE_CURRENT_LIST_DIR}/src/internal ALL_SRC)
+ file(GLOB ALL_HEADERS ${CMAKE_CURRENT_LIST_DIR}/src/*.h )
+ set(SIO_INCLUDEDIR ${CMAKE_CURRENT_LIST_DIR})
+ 
+-add_library(sioclient ${ALL_SRC})
+-target_include_directories(sioclient PRIVATE ${Boost_INCLUDE_DIRS} 
++add_library(SocketIO ${ALL_SRC})
++target_include_directories(SocketIO PRIVATE ${Boost_INCLUDE_DIRS} 
+     ${CMAKE_CURRENT_LIST_DIR}/src 
+     ${CMAKE_CURRENT_LIST_DIR}/lib/websocketpp 
+     ${CMAKE_CURRENT_LIST_DIR}/lib/rapidjson/include
+ )
+ 
+-set_property(TARGET sioclient PROPERTY CXX_STANDARD 11)
+-set_property(TARGET sioclient PROPERTY CXX_STANDARD_REQUIRED ON)
+-target_link_libraries(sioclient PRIVATE ${Boost_LIBRARIES})
++set_property(TARGET SocketIO PROPERTY CXX_STANDARD 11)
++set_property(TARGET SocketIO PROPERTY CXX_STANDARD_REQUIRED ON)
++target_link_libraries(SocketIO PRIVATE ${Boost_LIBRARIES})
+ if(BUILD_SHARED_LIBS)
+-set_target_properties(sioclient
++set_target_properties(SocketIO
+ 	PROPERTIES
+ 		SOVERSION ${MAJOR}
+ 		VERSION ${MAJOR}.${MINOR}.${PATCH}
+ 	)
+ endif()
+-list(APPEND TARGET_LIBRARIES sioclient)
+-
+-find_package(OpenSSL)
+-if(OPENSSL_FOUND)
+-add_library(sioclient_tls ${ALL_SRC})
+-target_include_directories(sioclient_tls PRIVATE ${Boost_INCLUDE_DIRS} 
+-    ${CMAKE_CURRENT_LIST_DIR}/src 
+-    ${CMAKE_CURRENT_LIST_DIR}/lib/websocketpp 
+-    ${CMAKE_CURRENT_LIST_DIR}/lib/rapidjson/include
+-    ${OPENSSL_INCLUDE_DIR}
+-)
+-
+-set_property(TARGET sioclient_tls PROPERTY CXX_STANDARD 11)
+-set_property(TARGET sioclient_tls PROPERTY CXX_STANDARD_REQUIRED ON)
+-target_link_libraries(sioclient_tls PRIVATE ${Boost_LIBRARIES} ${OPENSSL_LIBRARIES} )
+-target_compile_definitions(sioclient_tls PRIVATE -DSIO_TLS)
+-if(BUILD_SHARED_LIBS)
+-set_target_properties(sioclient_tls
+-	PROPERTIES
+-		SOVERSION ${MAJOR}
+-		VERSION ${MAJOR}.${MINOR}.${PATCH}
+-	)
+-endif()
+-list(APPEND TARGET_LIBRARIES sioclient_tls)
+-
+-endif()
++list(APPEND TARGET_LIBRARIES SocketIO)
+ 
+ install(FILES ${ALL_HEADERS} 
+-    DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build/include"
++    DESTINATION include 
+ )
+ 
+ install(TARGETS ${TARGET_LIBRARIES}
+-    DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build/lib/${CMAKE_BUILD_TYPE}"
++    DESTINATION lib
+ )
+ 
+-install(FILES ${Boost_LIBRARIES} 
+-    DESTINATION "${CMAKE_CURRENT_LIST_DIR}/build/lib/${CMAKE_BUILD_TYPE}"
+-)
+-- 
+2.17.1
+

@@ -1,0 +1,25 @@
+From 836ce8967e2d23b2dabe70238924564ade521e90 Mon Sep 17 00:00:00 2001
+From: sorlandini <sandrine.orlandini@hach.com>
+Date: Thu, 23 Aug 2018 13:24:12 +0200
+Subject: [PATCH] Add flag for linker for 2.8
+
+---
+ Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 91d5c59..e0df8fe 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -640,7 +640,7 @@ src_ofonod_SOURCES = $(builtin_sources) $(gatchat_sources) src/ofono.ver \
+ src_ofonod_LDADD = gdbus/libgdbus-internal.la $(builtin_libadd) \
+ 			@GLIB_LIBS@ @DBUS_LIBS@ -ldl
+ 
+-src_ofonod_LDFLAGS = -Wl,--export-dynamic \
++src_ofonod_LDFLAGS = -Wl,--export-dynamic, -pthread \
+ 				-Wl,--version-script=$(srcdir)/src/ofono.ver
+ 
+ BUILT_SOURCES = $(local_headers) src/builtin.h
+-- 
+2.7.4
+

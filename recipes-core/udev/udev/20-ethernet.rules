@@ -1,0 +1,10 @@
+# Ethernet network device rules file
+#
+
+# Do not assign ethX names, since they might be already in use.
+# Use udevadm to get possible selectors.
+# udevadm info -a -p /sys/class/net/eth0
+
+# rename eth0 --> fec0, eth1 --> fec1 
+SUBSYSTEM=="net", ACTION=="add", KERNELS=="30be0000.ethernet", NAME="fec0"
+SUBSYSTEM=="net", ACTION=="add", KERNELS=="30bf0000.ethernet", NAME="fec1"

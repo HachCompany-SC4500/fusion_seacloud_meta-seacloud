@@ -1,0 +1,6 @@
+[Match]
+Name=eth*
+
+[Network]
+Address=192.168.165.30/24
+Address=192.168.100.100/16

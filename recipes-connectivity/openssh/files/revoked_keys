@@ -1,0 +1,3 @@
+# List of revoked keys, one key per line
+# All authentication attemps with one of those keys is rejected
+

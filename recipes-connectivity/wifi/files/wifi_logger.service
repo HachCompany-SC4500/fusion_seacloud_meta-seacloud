@@ -1,0 +1,6 @@
+[Unit]
+Description=WiFi logger
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/wifi_logger.py

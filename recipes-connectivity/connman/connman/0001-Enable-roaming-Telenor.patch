@@ -1,0 +1,28 @@
+From be9ea12936880da0d5bb1ba68715a10f6eff1b32 Mon Sep 17 00:00:00 2001
+From: sorlandini <sandrine.orlandini@hach.com>
+Date: Tue, 15 May 2018 15:54:45 +0200
+Subject: [PATCH] Enable roaming - Telenor
+
+---
+ src/service.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/service.c b/src/service.c
+index 04225af..71b46e8 100644
+--- a/src/service.c
++++ b/src/service.c
+@@ -3607,9 +3607,10 @@ static bool is_ignore(struct connman_service *service)
+ 	if (!service->autoconnect)
+ 		return true;
+ 
++    /* Commented for Telenor need
+ 	if (service->roaming)
+ 		return true;
+-
++    */
+ 	if (service->ignore)
+ 		return true;
+ 
+-- 
+2.7.4
+

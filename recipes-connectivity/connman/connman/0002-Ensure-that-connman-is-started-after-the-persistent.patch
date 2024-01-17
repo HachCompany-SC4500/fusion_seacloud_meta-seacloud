@@ -1,0 +1,28 @@
+From ed1efeb3a79710701e99fe4664bfcb6c9bce9ba8 Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Wed, 11 Nov 2020 15:23:20 +0100
+Subject: [PATCH] Ensure that connman is started after the persistent is
+ mounted.
+
+---
+ src/connman.service.in | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/connman.service.in b/src/connman.service.in
+index 72c0c918..9556c936 100644
+--- a/src/connman.service.in
++++ b/src/connman.service.in
+@@ -9,6 +9,10 @@ Wants=network.target
+ Conflicts=systemd-resolved.service
+ # only if not NFS mount, connman will disconnect your rootfs otherwise!
+ ConditionKernelCommandLine=!root=/dev/nfs
++# As network connection settings are located on the persistent partition,
++# connman must be started after it has been mounted
++Requires=persistent-crypto.service
++After=persistent-crypto.service
+ 
+ [Service]
+ Type=dbus
+-- 
+2.17.1
+

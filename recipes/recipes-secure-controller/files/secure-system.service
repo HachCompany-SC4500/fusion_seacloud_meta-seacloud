@@ -1,0 +1,29 @@
+[Unit]
+# Remove default dependencies (after basic.target for example)
+DefaultDependencies=no
+After=sysinit.target
+Before=basic.target
+
+# Ensures that the expected system security level is set up before user interaction with
+# the system is possible.
+Before=getty.target network.target
+
+# The file flag used as a signal to decide to enable system security features or not is
+# located on the encrypted persistent partition (/media/persistent). This partition is
+# mounted by the persistent-crypto.service.
+Requires=persistent-crypto.service
+After=persistent-crypto.service
+
+# Check if the file flag indicating that a controller is in development mode.
+# If this flag exists, don't enable the system security features.
+ConditionPathExists=!/media/persistent/development
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/secure-system.sh
+
+# This service needs root priviledge to perform its task.
+User=root
+
+[Install]
+WantedBy=basic.target

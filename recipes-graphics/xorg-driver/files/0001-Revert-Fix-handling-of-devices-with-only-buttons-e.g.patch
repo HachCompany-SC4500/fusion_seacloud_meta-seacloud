@@ -1,0 +1,30 @@
+From e214c5a23894dca7c9fbdc13d4c7aa857f1b3eb1 Mon Sep 17 00:00:00 2001
+From: Dragan Cecavac <dcecavac@witekio.com>
+Date: Tue, 11 Feb 2020 17:19:29 +0100
+Subject: [PATCH] Revert "Fix handling of devices with only buttons (e.g.
+ tablet pads)."
+
+This reverts commit 192fdb06905f0f190e3a0e258919676934e6633c.
+---
+ src/evdev.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/src/evdev.c b/src/evdev.c
+index 6b5eadd..05d15d0 100644
+--- a/src/evdev.c
++++ b/src/evdev.c
+@@ -2363,10 +2363,8 @@ EvdevProbe(InputInfoPtr pInfo)
+             pInfo->type_name = XI_TOUCHSCREEN;
+ 	} else {
+             if (!libevdev_has_event_code(pEvdev->dev, EV_REL, REL_X) ||
+-                !libevdev_has_event_code(pEvdev->dev, EV_REL, REL_Y)) {
+-                pEvdev->flags |= EVDEV_RELATIVE_EVENTS;
++                !libevdev_has_event_code(pEvdev->dev, EV_REL, REL_Y))
+                 EvdevForceXY(pInfo, Relative);
+-            }
+ 	    xf86IDrvMsg(pInfo, X_INFO, "Configuring as mouse\n");
+ 	    pInfo->type_name = XI_MOUSE;
+ 	}
+-- 
+2.7.4
+

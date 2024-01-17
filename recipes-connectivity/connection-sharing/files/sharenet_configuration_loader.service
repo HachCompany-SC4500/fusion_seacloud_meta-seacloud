@@ -1,0 +1,25 @@
+# This service reloads the connectivity sharing setup saved on the persistent
+# partition. After a controller update, network settings are reverted to the
+# defaults. It is therefore needed to reload them.
+# On a successful configuration reloading, this service is automatically
+# disabled (by /usr/local/bin/config_sharenet.py) to avoid unnecessary reloads
+# on the following boots.
+
+[Unit]
+Description=Connection sharing configuration loader
+
+# Loads connection sharing configuration before systemd-networkd.service starts
+Before=systemd-networkd.service
+
+# Connection sharing configuration must be loaded after the wired network
+# interface configuration is loaded, otherwise connection sharing settings
+# will be erased
+After=ethernet_configuration_loader.service
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/local/bin/config_sharenet.py load configuration
+
+[Install]
+WantedBy=network.target

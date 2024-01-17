@@ -1,0 +1,11 @@
+[Unit]
+Description=Cellular Signal Strength monitor
+After=ofono.service connman.service backend.service
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/local/bin/cellular_signal_strength_monitor.py
+
+[Install]
+WantedBy=multi-user.target

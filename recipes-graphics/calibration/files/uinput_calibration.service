@@ -1,0 +1,12 @@
+[Unit]
+Description=Calibration service for touchscreen
+BindsTo=dev-input-ts.device
+After=dev-input-ts.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/uinput_calibration.sh
+
+[Install]
+WantedBy=multi-user.target

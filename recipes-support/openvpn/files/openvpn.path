@@ -1,0 +1,18 @@
+# By default, this service is disabled
+# Enabling VPN in the web server makes this service enabled and started (see config_VPN.py)
+# The web server reads the status of this service determine if the VPN is enabled or disabled (see config_VPN.py)
+
+[Unit]
+Description=Openvpn started only if required files are present
+
+[Path]
+# The service is only started when all the following files are present
+# To achieve this, for each file there is a PathExists condition in the path unit and a ConditionPathExists condition in the service unit
+# Each time one of these files is created, openvpn.path triggers a launch of the openvpn.service unit and when all the files are present, the service is started.
+PathExists=/etc/keys/openvpn.cfg
+# %H is expanded as hostname
+PathExists=/etc/keys/%H.key
+PathExists=/etc/keys/%H.crt
+
+[Install]
+WantedBy=multi-user.target

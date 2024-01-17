@@ -1,0 +1,34 @@
+From 00c7b8e31d3cf5fd6b32c4ac696a20b72604ec2e Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Wed, 3 Nov 2021 16:49:07 +0100
+Subject: [PATCH] Disconnecting an interface only remove its own routes.
+
+src/inet.c: connman_inet_clear_gateway_address() now only removes routes related to the interface
+pointed to by the argument to its parameter @index.
+
+Specification of the interface in the "struct rtentry" passed to the SIOCDELRT ioctl command was missing,
+leading connman_inet_clear_gateway_address() to clear too many routes.
+For example, when two network interfaces are connected on the same network with a gateway and one of them
+is disconnected, all the default route targeting this network are removed. In this scenario, no default route
+remains at all and any connection to the Internet becomes impossible.
+With this modification, only the default route linked to the disconnected interface is removed.
+---
+ src/inet.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/inet.c b/src/inet.c
+index b887aa0b..478e940a 100644
+--- a/src/inet.c
++++ b/src/inet.c
+@@ -864,6 +864,8 @@ int connman_inet_clear_gateway_address(int index, const char *gateway)
+ 	addr.sin_addr.s_addr = INADDR_ANY;
+ 	memcpy(&rt.rt_genmask, &addr, sizeof(rt.rt_genmask));
+ 
++	rt.rt_dev = ifr.ifr_name;
++
+ 	if (ioctl(sk, SIOCDELRT, &rt) < 0 && errno != ESRCH)
+ 		err = -errno;
+ 
+-- 
+2.17.1
+

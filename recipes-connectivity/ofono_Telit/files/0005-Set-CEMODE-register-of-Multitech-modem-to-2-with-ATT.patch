@@ -1,0 +1,57 @@
+From 2d54b3447567a2084f23bd4e3bc5cec7cfb5afc1 Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Tue, 7 Dec 2021 17:18:56 +0100
+Subject: [PATCH] Set CEMODE register of Multitech modem to 2 with ATT cellular
+ network.
+
+North America ATT is deprecating 3G technology on their cellular network.
+Switching the EPS mode of operation of modems (set in CEMODE) will be needed
+for them to still be able to attach to the network.
+
+Related to the task FCON2-1944.
+---
+ plugins/le910v2.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/plugins/le910v2.c b/plugins/le910v2.c
+index 07fbe54a..bb9c9787 100644
+--- a/plugins/le910v2.c
++++ b/plugins/le910v2.c
+@@ -406,6 +406,13 @@ static void telit_multitech_reboot_cb(gboolean ok, GAtResult *result, gpointer u
+ 	DBG("Multitech reboot triggered successfully");
+ }
+ 
++static void telit_multitech_cemode_cb(gboolean ok, GAtResult *result, gpointer user_data)
++{
++	if (!ok) {
++		DBG("Failed to set the Multitech modem register +CEMODE");
++	}
++}
++
+ static void telit_multitech_fwswitch_cb(gboolean ok, GAtResult *result, gpointer user_data)
+ {
+ 	struct ofono_modem *modem = user_data;
+@@ -432,6 +439,20 @@ static void telit_multitech_fwswitch_cb(gboolean ok, GAtResult *result, gpointer
+ 		return;
+ 	}
+ 
++	if (0 == provider_status) {
++		DBG("Multitech modem with ATT firmware, setting CEMODE to 2");
++		g_at_chat_send(data->chat, "AT+CEMODE=2", none_prefix,
++			telit_multitech_cemode_cb, modem, NULL);
++	}
++	else if (1 == provider_status) {
++		DBG("Multitech modem with Verizon firmware, setting CEMODE to 1 (the default)");
++		g_at_chat_send(data->chat, "AT+CEMODE=1", none_prefix,
++			telit_multitech_cemode_cb, modem, NULL);
++	}
++	else {
++		DBG("warning: invalid firmware identifier read from Multitech modem");
++	}
++
+ 	DBG("Multitech already in correct ProviderMode");
+ 	if (data->modem_needs_reset) {
+ 		DBG("Multitech modem needs restart after USBCFG changed");
+-- 
+2.17.1
+

@@ -1,0 +1,18 @@
+[Unit]
+Description=Logger server application
+
+# Configure unit start rate limiting to: Max 50 attempts, retry every 1 minute
+# Units which are started more than StartLimitBurst times within an interval StartLimitIntervalSec are notpermitted to start any more
+# So, StartLimitIntervalSec > RestartSec * StartLimitBurst
+StartLimitBurst=50
+StartLimitIntervalSec=3500
+
+[Service]
+Environment="CONTROLLER=Eagle"
+Environment="PROCESS_NAME=logger-server"
+ExecStart=/usr/bin/node /usr/local/bin/eagle_logger-server.js
+Restart=always
+RestartSec=60
+#User=
+WorkingDirectory=~
+

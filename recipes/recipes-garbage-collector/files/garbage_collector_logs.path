@@ -1,0 +1,12 @@
+[Unit]
+Description=Garbage collector logs path
+# There is no need to set After/Requires here. See [Install] section above
+ 
+[Path]
+PathChanged=/media/persistent/fcc/log/
+Unit=garbage_collector@logs.service
+
+[Install]
+# No install section is needed. 
+# This .path is started/stopped by the unit listed in [Path] section, 
+# which is initially started by its corresponding .timer unit.

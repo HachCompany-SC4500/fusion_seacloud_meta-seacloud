@@ -1,0 +1,7 @@
+[Unit]
+Description=Cellular Data Supervisor
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/cellular_data_supervisor.py
+

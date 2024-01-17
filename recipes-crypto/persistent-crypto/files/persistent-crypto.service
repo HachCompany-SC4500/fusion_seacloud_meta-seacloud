@@ -1,0 +1,17 @@
+[Unit]
+Description=Persistent Crypto Service
+
+# Remove default dependencies (after basic.target for example)
+DefaultDependencies=no
+After=sysinit.target
+Before=basic.target
+
+[Service]
+Type=oneshot
+ExecStart=/etc/persistent-crypto.sh
+# To have the service in active and not dead state after execution. Otherwise the service will be restart by other service that have a dependency on it as wifi_logger.service for example
+RemainAfterExit=yes
+
+[Install]
+WantedBy=basic.target
+

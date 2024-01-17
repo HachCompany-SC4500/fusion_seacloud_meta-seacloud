@@ -1,0 +1,22 @@
+[Unit]
+Description=Backend application
+
+Requires=logger-server.service
+# The backend needs the network interfaces to be configured
+After=network.target logger-server.service
+
+[Service]
+Environment="CONTROLLER=Eagle"
+Environment="PROCESS_NAME=backend"
+ExecStart=/usr/bin/node /usr/local/bin/eagle_backend.js
+Restart=always
+#User=_backend
+WorkingDirectory=~
+#please pay attention that the update from usb stick trigered from frontend
+#is still working if you uncomment the following line
+#PrivateTmp=yes
+UMask=0007
+
+# [Install]
+# No install section is needed as the backend.service will be pulled by frontend.service
+# because frontend.service has a "Wants" dependency on backend.service

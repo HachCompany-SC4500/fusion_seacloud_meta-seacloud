@@ -1,0 +1,3 @@
+# The script 'secure_system_before_shipment.sh' needs to be run with root
+# priviledges in any case, even when not run from root
+ALL ALL=(root) NOPASSWD: /usr/local/bin/secure_system_before_shipment.sh

@@ -1,0 +1,59 @@
+From 1769118fbfe113207daa99d9cd2da9152cc19f7e Mon Sep 17 00:00:00 2001
+From: Corentin Merlet <cmerlet@witekio.com>
+Date: Mon, 2 Aug 2021 16:22:03 +0200
+Subject: [PATCH] Always update the GPRS status after the Network Registration
+ status is updated.
+
+By default, the GPRS status is only checked if the Network Registration status
+is in a successful state (REGISTERED or ROAMING). On the North America cellular
+network, this works fine with the ATT mode as the modem +CREG state is
+correctly updated. However, on with the Verizon mode, +CREG is not and
+one must check +CGREG instead.
+
+Therefore, the first part of the patch adds a call to refresh the state of
++CGREG in ofono's database in all cases (not only on successful state of +CREG).
+The second part of the patch is to prevent unsetting the "Attached" flag in
+ofono's database when +CGREG is in a successful state; unsetting this flag has
+the side effect of sending AT+CGATT=0 to the modem, disconnecting it from all
+networks.
+
+Note: in normal scenario, +CGREG should not report a "successful connection"
+state without +CREG reporting one as well. Some others had this issue, as
+reported in this thread:
+https://github.com/botletics/SIM7000-LTE-Shield/issues/50 (unrelated project)
+By a strange coincidence, it happens that they are also using a Telenor SIM
+card.
+This strongly suggests that the issue solved by this patch is not caused
+by the modem itself, but the SIM card.
+---
+ src/gprs.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/gprs.c b/src/gprs.c
+index 377eced7..16cff4f0 100644
+--- a/src/gprs.c
++++ b/src/gprs.c
+@@ -1738,6 +1738,7 @@ static void gprs_netreg_update(struct ofono_gprs *gprs)
+ 
+ 	attach = attach && gprs->powered;
+ 
++	gprs->driver->attached_status(gprs, registration_status_cb, gprs);
+ 	DBG("attach: %u, driver_attached: %u", attach, gprs->driver_attached);
+ 
+ 	if (ofono_netreg_get_technology(gprs->netreg) ==
+@@ -1758,8 +1759,10 @@ static void gprs_netreg_update(struct ofono_gprs *gprs)
+ 
+ 	gprs->flags |= GPRS_FLAG_ATTACHING;
+ 
+-	gprs->driver_attached = attach;
+-	gprs->driver->set_attached(gprs, attach, gprs_attach_callback, gprs);
++	if (attach || (gprs->status != 1 && gprs->status != 5)) {
++		gprs->driver_attached = attach;
++		gprs->driver->set_attached(gprs, attach, gprs_attach_callback, gprs);
++	}
+ }
+ 
+ static void netreg_status_changed(int status, int lac, int ci, int tech,
+-- 
+2.20.1
+

@@ -1,0 +1,8 @@
+[Unit]
+Description=WiFi RSSI monitor
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/wifi_rssi_monitor.sh
+# Restart in case of failure
+Restart=on-failure
