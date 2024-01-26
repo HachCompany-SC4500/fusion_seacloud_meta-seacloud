@@ -1,5 +1,5 @@
 From c186c97e76094eed544c7e88d33267ca0bc7ec8b Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Tue, 4 Jan 2022 17:26:20 +0100
 Subject: [PATCH] roaming_allowed now defaults to TRUE
 

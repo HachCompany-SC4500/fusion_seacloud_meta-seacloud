@@ -1,5 +1,5 @@
 From 2d54b3447567a2084f23bd4e3bc5cec7cfb5afc1 Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Tue, 7 Dec 2021 17:18:56 +0100
 Subject: [PATCH] Set CEMODE register of Multitech modem to 2 with ATT cellular
  network.
