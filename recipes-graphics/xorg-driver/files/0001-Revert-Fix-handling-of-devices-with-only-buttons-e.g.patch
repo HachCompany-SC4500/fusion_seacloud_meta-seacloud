@@ -1,5 +1,5 @@
 From e214c5a23894dca7c9fbdc13d4c7aa857f1b3eb1 Mon Sep 17 00:00:00 2001
-From: Dragan Cecavac <dcecavac@witekio.com>
+From: Dragan Cecavac <dcecavac>
 Date: Tue, 11 Feb 2020 17:19:29 +0100
 Subject: [PATCH] Revert "Fix handling of devices with only buttons (e.g.
  tablet pads)."

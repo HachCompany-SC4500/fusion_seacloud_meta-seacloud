@@ -1,5 +1,5 @@
 From ac5b9137c29f355aa574f2f0a5cfd4ea581b39b8 Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Thu, 25 Mar 2021 16:55:42 +0100
 Subject: [PATCH] Don't prevent systemd-resolved.service when connman.service
  is running. This does not cause any conflict. This Conflict= directive

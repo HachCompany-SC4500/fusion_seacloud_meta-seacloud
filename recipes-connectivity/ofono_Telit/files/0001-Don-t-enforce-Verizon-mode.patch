@@ -1,5 +1,5 @@
 From 022ca30f9b452a7350aacc5d0fb3cef539f25765 Mon Sep 17 00:00:00 2001
-From: Dragan Cecavac <dcecavac@witekio.com>
+From: Dragan Cecavac <dcecavac>
 Date: Mon, 14 Dec 2020 08:15:33 +0100
 Subject: [PATCH] Don't enforce Verizon mode
 

@@ -1,5 +1,5 @@
 From 2076a15cba14b0862d11f0c06b6c46861df82275 Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Fri, 7 May 2021 09:36:21 +0200
 Subject: [PATCH] Don't use GSM by default; only UMTS and LTE.
 

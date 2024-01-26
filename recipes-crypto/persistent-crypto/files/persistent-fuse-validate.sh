@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Copyright (C) 2020 Hach
-# Author: Dragan Cecavac <dcecavac@witekio.com>
+# Author: Dragan Cecavac <dcecavac>
 #
 # If the encryption key changed, this script will perform the transition to new format.
 

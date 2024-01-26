@@ -1,5 +1,5 @@
 From add19734ad88c6fd6d8ed7cdf5367ebb39ce474e Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Mon, 20 Sep 2021 16:38:45 +0200
 Subject: [PATCH] Remove dependency of network-online.target on
  systemd-networkd-wait-online.service.

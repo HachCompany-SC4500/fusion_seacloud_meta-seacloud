@@ -1,5 +1,5 @@
 From 50ab87177f344706e3732c06d911b0bb85a22410 Mon Sep 17 00:00:00 2001
-From: Guillaume Deroire <guillaume.deroire@hach.com>
+From: Guillaume Deroire <guillaume.deroire@>
 Date: Thu, 25 Jul 2019 14:03:28 +0200
 Subject: [PATCH] Always launch gpicview in fullscreen
 

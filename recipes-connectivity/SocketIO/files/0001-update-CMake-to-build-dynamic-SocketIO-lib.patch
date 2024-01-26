@@ -1,5 +1,5 @@
 From a82d0cb1943fbdb17054b599474119dbdb7716f8 Mon Sep 17 00:00:00 2001
-From: Manikantan Ravichandran <mravichandran@witekio.com>
+From: Manikantan Ravichandran <mravichandran>
 Date: Mon, 1 Feb 2021 20:28:44 +0100
 Subject: [PATCH] update CMake to build dynamic SocketIO lib
 

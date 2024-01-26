@@ -1,5 +1,5 @@
 From a66fa52eb3d3f922a761b42e10507cee42f9f62f Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Tue, 27 Apr 2021 15:23:08 +0200
 Subject: [PATCH] Drop fallback address when a DHCP lease is acquired.
 

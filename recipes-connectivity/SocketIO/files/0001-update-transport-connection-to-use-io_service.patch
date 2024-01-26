@@ -1,5 +1,5 @@
 From e3f2ef3222001cf852300e9a95dd04ca77c04608 Mon Sep 17 00:00:00 2001
-From: Manikantan Ravichandran <mravichandran@witekio.com>
+From: Manikantan Ravichandran <mravichandran>
 Date: Tue, 2 Feb 2021 17:38:49 +0100
 Subject: [PATCH] update transport connection to use io_service
 

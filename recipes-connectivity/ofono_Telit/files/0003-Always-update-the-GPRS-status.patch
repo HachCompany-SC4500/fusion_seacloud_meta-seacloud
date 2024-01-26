@@ -1,5 +1,5 @@
 From 1769118fbfe113207daa99d9cd2da9152cc19f7e Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Mon, 2 Aug 2021 16:22:03 +0200
 Subject: [PATCH] Always update the GPRS status after the Network Registration
  status is updated.

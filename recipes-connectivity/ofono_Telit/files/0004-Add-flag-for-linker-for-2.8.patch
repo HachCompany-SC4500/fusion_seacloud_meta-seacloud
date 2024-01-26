@@ -1,5 +1,5 @@
 From 836ce8967e2d23b2dabe70238924564ade521e90 Mon Sep 17 00:00:00 2001
-From: sorlandini <sandrine.orlandini@hach.com>
+From: sorlandini <sandrine.orlandini@>
 Date: Thu, 23 Aug 2018 13:24:12 +0200
 Subject: [PATCH] Add flag for linker for 2.8
 

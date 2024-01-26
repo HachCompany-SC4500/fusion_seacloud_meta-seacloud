@@ -1,5 +1,5 @@
 From 00c7b8e31d3cf5fd6b32c4ac696a20b72604ec2e Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Wed, 3 Nov 2021 16:49:07 +0100
 Subject: [PATCH] Disconnecting an interface only remove its own routes.
 

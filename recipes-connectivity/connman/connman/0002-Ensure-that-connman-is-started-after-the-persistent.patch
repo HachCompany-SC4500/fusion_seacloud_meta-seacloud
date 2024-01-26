@@ -1,5 +1,5 @@
 From ed1efeb3a79710701e99fe4664bfcb6c9bce9ba8 Mon Sep 17 00:00:00 2001
-From: Corentin Merlet <cmerlet@witekio.com>
+From: Corentin Merlet <cmerlet>
 Date: Wed, 11 Nov 2020 15:23:20 +0100
 Subject: [PATCH] Ensure that connman is started after the persistent is
  mounted.
