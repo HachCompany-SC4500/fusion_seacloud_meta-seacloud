@@ -44,11 +44,20 @@ LoginGraceTime 1m # default: 120 (2m)
 ## randomly drop new connections once 10 unauthenticated ones are already opened
 #MaxStartups 10:30:100
 
-# Disabled the below commented insecure/Week Ciphers and MACs from the Supported list as its not recommended.
-# 3des-cbc, aes128-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se,hmac-sha1-96
-# hmac-sha1,hmac-md5, hmac-md5-96, hmac-sha1-96-etm@openssh.com, hmac-md5-etm@openssh.com, hmac-md5-96-etm@openssh.com,umac-64@openssh.com,umac-64-etm@openssh.com,hmac-sha1-etm@openssh.com
-Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes128-gcm@openssh.com,aes256-gcm@openssh.com,chacha20-poly1305@openssh.com
-MACs hmac-sha2-256,hmac-sha2-512,umac-128@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com
+# Disable insecure Kex algorithms : 
+# - diffie-hellman-group14-sha1 : stronger than diffie-hellman-group1-sha1 but will probably be soon broken "CIS_Distribution_Independent_Linux_Benchmark_v2.0.0.pdf" (https://learn.cisecurity.org/benchmarks)
+# - ecdh-sha2-nistp* : There are suspicions that the NIST algos are weak as selected by NSA (https://blog.cr.yp.to/20140323-ecdsa.html)
+KexAlgorithms -diffie-hellman-group14-sha1,ecdh-sha2-nistp*
+
+# Disable insecure Host Key algorithms :
+# - ssh-rsa : it will soon be deprecated by OpenSSH (https://lwn.net/Articles/821544/)
+# - ecdsa-sha2-nistp256 : There are suspicions that the NIST algos are weak as selected by NSA (https://blog.cr.yp.to/20140323-ecdsa.html)
+HostKeyAlgorithms -ssh-rsa,ecdsa-sha2-nistp256
+
+# Disable insecure MAC algorithms :
+# -hmac-sha1* : hmac-sha1 are using sha1 hash which is broken "CIS_Distribution_Independent_Linux_Benchmark_v2.0.0.pdf" (https://learn.cisecurity.org/benchmarks)
+# -umac-64* : is using too low entropy "CIS_Distribution_Independent_Linux_Benchmark_v2.0.0.pdf" (https://learn.cisecurity.org/benchmarks and https://blog.stribik.technology/2015/01/04/secure-secure-shell.html)
+MACs -hmac-sha1*,umac-64*
 
 ## Logging
 #SyslogFacility AUTH

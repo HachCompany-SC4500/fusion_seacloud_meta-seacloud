@@ -21,7 +21,6 @@ pidev_export_path_base = '/mnt/fcc/pidev/export/'
 service_logger_export_path_base = ''
 logger_file_requested = False
 logger_file_number_list = {"NT3100sc":24, "NT3200sc":24}
-
 def print_usage():
     print("device_logs.py usage:")
     print("-h / --help : to display this help")
