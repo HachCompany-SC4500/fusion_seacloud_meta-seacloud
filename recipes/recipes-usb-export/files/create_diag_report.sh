@@ -50,6 +50,7 @@ cp -a /media/persistent/system/sensor-swupdate-helpers_logs* ${SYSTEM}/
 cp -a /media/persistent/system/update_supervisor.log* ${SYSTEM}/
 cp -a /media/persistent/fcc/RL78_update_supervisor.log* ${SYSTEM}/
 cp -a /media/persistent/fcc/ctrl_update.log* ${SYSTEM}/
+cp -a /media/persistent/system/befe-special-logs.log* ${SYSTEM}/
 
 echo "Export network logs and settings"
 NETWORK=${REPORT_CONTENT_LOCATION}/network
@@ -84,7 +85,7 @@ cp -a /tmp/FwVersions.txt ${VERSION}/
 echo "Export application status"
 MNT_FCC_SET=${REPORT_CONTENT_LOCATION}/mnt_fcc_set
 mkdir -p ${MNT_FCC_SET}
-cp -r /mnt/fcc/set/* ${MNT_FCC_SET}
+cp -rL /mnt/fcc/set/* ${MNT_FCC_SET}
 lsscd &> ${REPORT_CONTENT_LOCATION}/lsscd
 lsver &> ${REPORT_CONTENT_LOCATION}/lsver
 lsps &> ${REPORT_CONTENT_LOCATION}/lsps
