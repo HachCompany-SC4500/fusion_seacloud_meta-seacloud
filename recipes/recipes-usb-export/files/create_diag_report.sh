@@ -34,6 +34,7 @@ cp -r /var/log/watchdog ${LOGS}/
 shopt -s extglob
 cp -a /var/log/www/!(*_diagreport*) ${LOGS}/
 shopt -u extglob
+cp -a /mnt/fcc/temperature_warning_logs.txt ${LOGS}
 
 echo "Export system informations"
 SYSTEM=${REPORT_CONTENT_LOCATION}/system
