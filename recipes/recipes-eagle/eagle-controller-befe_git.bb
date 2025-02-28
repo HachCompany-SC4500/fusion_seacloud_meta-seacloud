@@ -83,6 +83,8 @@ FILES_${PN} += "xserver.service \
                 backend.service \
                 /usr/local/bin/eagle_backend.js \
                 /usr/local/bin/definitions/* \
+                /usr/local/bin/definitions/cdps/* \
+                /var/lib/fit/* \
                 ${sysconfdir}/sudoers.d/80-backend \
                 logger-server.service \
                 /usr/local/bin/eagle_logger-server.js \
@@ -142,6 +144,8 @@ run_npm_license_checker() {
 do_install() {
     install -d ${D}/usr/local/bin/
     install -d ${D}/usr/local/bin/definitions/
+    install -d ${D}/usr/local/bin/definitions/cdps/
+    install -d ${D}/var/lib/fit/
     install -m 0644 apps/eagle-backend/dist/eagle_backend.js ${D}/usr/local/bin/
     install -m 0644 apps/eagle-logger-server/dist/eagle_logger-server.js ${D}/usr/local/bin/
     install -m 0755 apps/eagle-frontend/release/eagle_frontend.AppImage ${D}/usr/local/bin/
@@ -160,6 +164,12 @@ do_install() {
     for d in $(find . -type d); do install -d "$d" "${D}/usr/local/bin/definitions/$d"; done
     for f in $(find . -type f); do install -m 644 "$f" "${D}/usr/local/bin/definitions/$f"; done
     cd -
+
+    if [ -d apps/eagle-backend/dist/cdp/ ]; then
+        cd apps/eagle-backend/dist/cdp/
+	    for f in $(find . -type f); do install -m 644 "$f" "${D}/usr/local/bin/definitions/cdps/$f"; done
+        cd -
+    fi
 
     install -d ${D}/etc/systemd/system/
     install -m 0644 ${WORKDIR}/backend.service ${D}/etc/systemd/system/
