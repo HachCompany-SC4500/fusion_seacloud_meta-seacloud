@@ -2,4 +2,6 @@
 # Warning: version must be updated for each modifications
 # Format is xxx.yy
 # yy must have exactly 2 digits because string is converted into integer only by removing the dot
-PERSISTENT_VERSION=1.28
+# Please, add a comment line '# Reason: <your explanation>', explaining the reason of the version change
+# Reason: inlcude updated Claros certificate in the image (Fusion_FW_common/fusion_fw/merge/mnt/fcc/set/cacert.pem)
+PERSISTENT_VERSION=1.29

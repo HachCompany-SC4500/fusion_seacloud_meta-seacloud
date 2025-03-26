@@ -12,7 +12,7 @@ DEPENDS += "python python-pygobject python-dbus"
 
 #!!!!! This version has to be updated if a new commit on fusion_seacloud_ofono.git is done !!!!!
 BRANCH = "github_publication_SC4500"
-SRCREV="3edf988fc95546b7bd8f1f1e7cbc066b03c499c6"
+SRCREV="af72b508d9d33d22e66213e76c55eec88f12ec2d"
 
 # 0002-Don-t-use-GSM-by-default.patch is a temporary workaround about a hardware issue.
 # 0003-Always-update-the-GPRS-status.patch fixes an issue encountered on Eagle systems
