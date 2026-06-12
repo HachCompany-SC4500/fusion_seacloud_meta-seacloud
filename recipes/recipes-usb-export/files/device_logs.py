@@ -21,7 +21,7 @@ pidev_export_path_base = '/mnt/fcc/pidev/export/'
 # Data needed for logger file export
 service_logger_export_path_base = ''
 logger_file_requested = False
-logger_file_number_list = {"NT3100sc":24, "NT3200sc":24, "TU5300_sc":24, "TU5400_sc":24, "NH6000SC":24, "PHOSPHAX_sc_LR":24}
+logger_file_number_list = {"NT3100sc":24, "NT3200sc":24, "TU5300_sc":24, "TU5400_sc":24, "NH6000SC":24, "PHOSPHAX_sc_LR":24, "NP6000SC":24}
 def print_usage():
     print("device_logs.py usage:")
     print("-h / --help : to display this help")
@@ -167,7 +167,7 @@ def export_to(folder_path_base):
                                 current_dateTime = "{}_{}_{}_{}_{}_{}".format(now.year, now.strftime("%m"), now.strftime("%d"), now.strftime("%H"), now.strftime("%M"), now.strftime("%S"))
                                 if device_name in {"TU5300_sc", "PHOSPHAX_sc_LR", "TU5400_sc"}:
                                     filename = "{}_{}_{}.bin".format("ServiceLogger", current_dateTime, serial_number.lstrip('0')).replace(' ', '_')
-                                elif device_name == "NH6000SC":
+                                elif device_name == "NH6000SC" or device_name == "NP6000SC":
                                     filename = "{}_{}_{}_{}.bin".format("Instrument_Log", device_name.replace("SC", "sc"), current_dateTime, serial_number.lstrip('0').replace(' ', '_'))
                                 else:
                                     filename = "{}_{}_{}_{}".format(device_name, serial_number, "service_logger", date_system).replace(' ', '_')
